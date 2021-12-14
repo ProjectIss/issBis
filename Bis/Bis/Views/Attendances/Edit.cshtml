@@ -1,0 +1,64 @@
+﻿@model Bis.Models.Attendance
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.id)
+            <div class="card">
+                <div class="card-header header-elements-inline">
+                    <h5 class="card-title">Edit Attendance</h5>
+                    <div class="header-elements">
+                        <div class="list-icons">
+                            @Html.ActionLink("Back to List", "Index", null, htmlAttributes: new { @class = "btn btn-primary" })
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label>EmployeeId</label>
+                            @Html.DropDownList("employeeId", null, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.employeeId, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label>Date </label>
+                            <div class="input-group">
+                                <span class="input-group-prepend">
+                                    <span class="input-group-text"><i class="icon-calendar22"></i></span>
+                                </span>
+                                @Html.TextBoxFor(model => model.date, new { data_uk_datepicker = "{0:dd / MM / yyyy}", @class = "form-control daterange-single-date" })
+                                @Html.ValidationMessageFor(model => model.date, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Status</label>
+                            @Html.DropDownList("status", new List<SelectListItem>
+                            {
+                                new SelectListItem{ Text="Present", Value="Present"},
+                                new SelectListItem{ Text="Absent", Value="Absent"}
+                            }, "--- Select ---", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.status, "", new { @class = "text-danger" })
+                        </div>
+
+                    </div>
+                    <div class="text-right">
+                        <button type="submit" value="Create" class="btn btn-success">Submit</button>
+                        @Html.ActionLink("Cancel", "Index", null, htmlAttributes: new { @class = "btn btn-primary" })
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

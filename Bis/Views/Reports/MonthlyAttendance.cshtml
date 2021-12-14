@@ -1,0 +1,168 @@
+﻿
+@{
+    ViewBag.Title = "MonthlyAttendance";
+}
+
+
+<script src="~/assets/js/FileSaver.js"></script>
+<script src="~/assets/js/xlsx.full.min.js"></script>
+<div class="row">
+    <div class="col-md-2">
+        <div class="form-group">
+            <label class="d-block" id="lblctg">Employee Category</label>
+            <select name="empCategory" id="empCategory" class="form-control col-xl-10" required>
+                <option value="">-Select Category-</option>
+                @foreach (var item in ViewBag.category)
+                {
+                    <option value="@item.id">@item.name </option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="form-group">
+            <label class="d-block" id="lblctg">Employee ID</label>
+            @Html.DropDownList("employee", null, htmlAttributes: new { @class = "form-control col-xl-10" })
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="form-group">
+            <label>Date</label>
+            <div class="input-group">
+                <input type="month" id="months" class="form-control" />
+            </div>
+
+        </div>
+    </div>
+    <div>
+        <button type="button" class="dropdown-item" id="btnSearch" style="background-color:white;margin-top: 27px;margin-left: 11px;background-color: #eee;"><i class="icon-search4"></i> Search</button>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header header-elements-inline">
+        <h5 class="card-title">Monthly Attendance</h5>
+        <div class="header-elements">
+            <div class="list-icons">
+                <button type="button" class="dropdown-item" id="btnxlsx"><i class="icon-file-excel"></i> .xlsx</button>
+                <button type="button" class="dropdown-item" id="btnprint"><i class="icon-printer"></i> Print</button>
+            </div>
+        </div>
+    </div>
+    <table class="table datatable-basic table-bordered table-striped table-hover" id="dailyAttd">
+        <thead>
+            <tr>
+                <th>Month / Year </th>
+                <th>Category</th>
+                <th>Employee ID</th>
+                <th>Employee Name</th>
+                <th>Present</th>
+                <th>Absent</th>
+            </tr>
+        </thead>
+        <tbody id="tbldailyAttd"></tbody>
+    </table>
+</div>
+<script>
+    $(function () {
+        $("#empCategory").select2();
+        $("#btnSearch").click(function () {
+            var c = document.getElementById("empCategory");
+            var category = c.options[c.selectedIndex].value;
+            var Date = $('#months').val();
+            var c = document.getElementById("employee");
+            var empId = c.options[c.selectedIndex].value;
+            Connsolidate(Date, category, empId);
+        });
+        $("#btnprint").click(function () {
+            printData();
+        });
+        $('#btnxlsx').click(function () {
+            exportToExcel();
+        });
+        $("#empCategory").change(function () {
+            var id = $(empCategory).find('option:selected').val();
+            var url = '@Url.Content("~/Reports/EmployeeDetailsByCatID")';
+            var data1 = { "CATEGORY": id };
+            $.post(url, data1, function (data) {
+                var items = [];
+                items.push("<option value=" + 0 + ">" + "-Select Employee-" + "</option>");
+                for (var i = 0; i < data.length; i++) {
+                    items.push("<option value=" + data[i].Value + ">" + data[i].Text + "</option>");
+                }
+                $("#employee").html(items.join(' '));
+                $("#employee").select2();
+            })
+        });
+
+    });
+    function Connsolidate(Date, category, empId) {
+         $("#tbldailyAttd").empty();
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Content("~/Reports/MonthlyAttendanceReport")',
+            dataType: 'json',
+            data: { category: category, selectedMonth: Date, empID: empId },
+            success: function (result) {
+                var data = JSON.parse(result);
+                var row;
+                for (var i = 0; i < data.length; i++) {
+                    row = '<tr>';
+                    row += '<td>' + data[i].date + '</td>';
+                    row += '<td>' + data[i].category + '</td>';
+                    row += '<td>' + data[i].employeeid + '</td>';
+                    row += '<td>' + data[i].name + '</td>';
+                    row += '<td>' + data[i].present + '</td>';
+                    row += '<td>' + data[i].Absent + '</td>';
+                    row += '</tr>';
+                    $("#tbldailyAttd").append(row);
+                }
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    }
+    function printData()
+{
+        var divToPrint = document.getElementById('dailyAttd');
+    var htmlToPrint = '' +
+        '<style type="text/css">' +
+        'table, th, td {' +
+        'border:1px solid #000;' +
+        ' border-collapse: collapse;'+
+        'padding:15px;' +
+        '}' +
+        '</style>';
+    htmlToPrint += divToPrint.outerHTML;
+    newWin = window.open("");
+    newWin.document.write(htmlToPrint);
+    newWin.print();
+    newWin.close();
+}
+    function exportToExcel() {
+        var wscols = [
+            { wch: 10 },
+            { wch: 20 },
+            { wch: 15 },
+            { wch: 15 },
+            { wch: 15 },
+        ];
+        var wb = XLSX.utils.table_to_book(document.getElementById("dailyAttd"), {
+            sheet: "MonthlyAttendance",
+            raw: true,
+        });
+        wb.Sheets["MonthlyAttendance"]["!cols"] = wscols;
+        var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+        saveAs(new Blob([s2ab(wbout)], { type: "application/octet-stream" }), "MonthlyAttendance.xlsx");
+    }
+    function s2ab(s) {
+        var buf = new ArrayBuffer(s.length);
+        var view = new Uint8Array(buf);
+        for (var i = 0; i < s.length; i++) {
+            view[i] = s.charCodeAt(i) & 0xFF;
+        }
+        return buf;
+    }
+</script>
+

@@ -1,0 +1,124 @@
+﻿@model Bis.Models.Company
+
+@{
+    ViewBag.Title = "Details";
+}
+
+
+<div class="row">
+    <div class="col-md-12">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="card">
+                <div class="card-header header-elements-inline">
+                    <h5 class="card-title">Details Company</h5>
+                    <div class="header-elements">
+                        <div class="list-icons">
+                            @Html.ActionLink("Back to List", "Index", null, htmlAttributes: new { @class = "btn btn-primary" })
+                            @Html.ActionLink("Edit", "Edit", new { id = Model.id }, new { @class = "btn btn-success" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">Name</label>:
+                        <div class="col-lg-9">
+                            @Html.DisplayFor(model => model.Location.name)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">Name</label>:
+                        <div class="col-lg-9">
+                            @Html.DisplayFor(model => model.companyName)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">Comapny Category</label>:
+                        <div class="col-lg-9">
+                            @Html.DisplayFor(model => model.companyCategoryId)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">Phone No</label>:
+                        <div class="col-lg-9">
+                            @Html.DisplayFor(model => model.phoneNo)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">Company Description</label>:
+                        <div class="col-lg-9">
+                            @Html.DisplayFor(model => model.companyDescription)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">Company Address</label>:
+                        <div class="col-lg-9">
+                            @Html.DisplayFor(model => model.companyAddress)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">Email</label>:
+                        <div class="col-lg-9">
+                            @Html.DisplayFor(model => model.email)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">GSTIN</label>:
+                        <div class="col-lg-9">
+                            @Html.DisplayFor(model => model.gSTIN)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">Pin Code</label>:
+                        <div class="col-lg-9">
+                            @Html.DisplayFor(model => model.pinCode)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">State Code</label>:
+                        <div class="col-lg-9">
+                            @Html.DisplayFor(model => model.stateCode)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">City Code</label>:
+                        <div class="col-lg-9">
+                            @Html.DisplayFor(model => model.cityCode)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">Vendor Code</label>:
+                        <div class="col-lg-9">
+                            @Html.DisplayFor(model => model.vendorCode)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">State</label>:
+                        <div class="col-lg-9">
+                            @Html.DisplayFor(model => model.state)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">City</label>:
+                        <div class="col-lg-9">
+                            @Html.DisplayFor(model => model.city)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">Details</label>:
+                        <div class="col-lg-9">
+                            @Html.DisplayFor(model => model.companyDetails)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+

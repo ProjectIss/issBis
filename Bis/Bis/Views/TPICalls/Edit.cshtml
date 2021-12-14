@@ -1,0 +1,145 @@
+﻿@model Bis.Models.TPICall
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.id)
+            <div class="card">
+                <div class="card-header header-elements-inline">
+                    <h5 class="card-title">Edit TPICall</h5>
+                    <div class="header-elements">
+                        <div class="list-icons">
+                            @Html.ActionLink("Back to List", "Index", null, htmlAttributes: new { @class = "btn btn-primary" })
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label>TPI Call Allocation</label>
+                            @Html.DropDownList("tPIAllocationId", null, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.tPIAllocationId, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Date</label>
+                            <div class="input-group">
+                                <span class="input-group-prepend">
+                                    <span class="input-group-text"><i class="icon-calendar22"></i></span>
+                                </span>
+                                @Html.TextBoxFor(model => model.date, new { data_uk_datepicker = "{0:dd / MM / yyyy}", @class = "form-control daterange-single-date" })
+                                @Html.ValidationMessageFor(model => model.date, "", new { @class = "text-danger" })
+
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Reporting QC</label>
+                            @Html.EditorFor(model => model.reportingQC, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.reportingQC, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Plant</label>
+                            @Html.EditorFor(model => model.plant, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.plant, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Product Group</label>
+                            @Html.EditorFor(model => model.productGroup, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.productGroup, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>In Time</label>
+                            @Html.EditorFor(model => model.inTime, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.inTime, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Offering Time</label>
+                            @Html.EditorFor(model => model.offeringTime, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.offeringTime, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Out Time</label>
+                            @Html.EditorFor(model => model.outTime, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.outTime, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Idle Time</label>
+                            @Html.EditorFor(model => model.idleTime, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.idleTime, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Days</label>
+                            @Html.EditorFor(model => model.days, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.days, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Total QTYoffered</label>
+                            @Html.EditorFor(model => model.totalQTYoffered, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.totalQTYoffered, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>No of Ok Casting</label>
+                            @Html.EditorFor(model => model.noofOkCasting, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.noofOkCasting, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>FTP</label>
+                            @Html.EditorFor(model => model.ftp, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ftp, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>STP</label>
+                            @Html.EditorFor(model => model.stp, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.stp, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>RW</label>
+                            @Html.EditorFor(model => model.rw, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.rw, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Hold</label>
+                            @Html.EditorFor(model => model.hold, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.hold, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Rejected</label>
+                            @Html.EditorFor(model => model.rejected, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.rejected, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Scope Inspection</label>
+                            @Html.EditorFor(model => model.scopeInspection, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.scopeInspection, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Status</label>
+                            @Html.DropDownList("status", new List<SelectListItem>
+                            {
+                                new SelectListItem{ Text="Active", Value="Active"},
+                                new SelectListItem{ Text="InActive", Value="InActive"}
+                            }, "--- Select ---", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.status, "", new { @class = "text-danger" })
+                        </div>
+
+                    </div>
+                    <div class="text-right">
+                        <button type="submit" value="Create" class="btn btn-success">Submit</button>
+                        @Html.ActionLink("Cancel", "Index", null, htmlAttributes: new { @class = "btn btn-primary" })
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

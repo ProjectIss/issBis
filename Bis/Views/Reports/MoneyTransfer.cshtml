@@ -1,0 +1,158 @@
+﻿
+@{
+    ViewBag.Title = "MoneyTransfer";
+}
+
+<script src="~/assets/js/FileSaver.js"></script>
+<script src="~/assets/js/xlsx.full.min.js"></script>
+<h2>Money Transfer</h2>
+<div class="card">
+    <div class="col-12">
+        <div class="row">
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>Date</label>
+                    <div class="input-group">
+
+                        <input type="month" class="form-control" id="fromdate">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label class="d-block">Category</label>
+                    <select name="empCategory" id="Employee" class="form-control col-xl-10" required>
+                        <option value="0">-Select Category-</option>
+                        @foreach (var item in ViewBag.employeeMoney)
+                        {
+                            <option value="@item.id">@item.name </option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" class="dropdown-item" id="btnSearch" style="margin-top: 27px;margin-left: 11px; background-color: #eee;"><i class="icon-search4"></i> Search</button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header header-elements-inline">
+                <h5 class="card-title">Instant Money Transfer Report</h5>
+                <div class="header-elements">
+                    <div class="list-icons">
+                        @*<button href="#" class="dropdown-item" id="btnSearch"><i class="icon-search4"></i> Search</button>*@
+                        <button href="#" class="dropdown-item" id="exportexcel"><i class="icon-file-excel"></i> .xlsx</button>
+                        <button href="#" class="dropdown-item"><i class="icon-printer"></i> Print</button>
+                    </div>
+                </div>
+            </div>
+            <table class="table datatable-basic table-bordered table-striped table-hover" id="tbladvanceHead">
+                <thead>
+                    <tr>
+                        <th>Debit Account No</th>
+                        <th>Beneficiary Ac No</th>
+                        <th>Beneficiary Name</th>
+                        <th>Net Salary</th>
+                        <th>Pay Mode</th>
+                        <th>Date</th>
+                        <th>IFSC</th>
+                    </tr>
+                </thead>
+                <tbody id="tblMoneyTransfer"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('#empCategory').select2();
+        $('#Employee').select2();
+        $("#exportexcel").click(function () {
+            exportToExcel();
+        });
+        $("#print").click(function () {
+            window.print();
+        });
+        $("#employeeId").change(function () {
+            var a = $(employeeId).find('option:selected').val();
+            EmployeeDetailByID(a);
+        });
+        $("#btnSearch").click(function () {
+            var empID = document.getElementById("Employee");
+            var employeId = empID.options[empID.selectedIndex].value;
+            var fromDate = $('#fromdate').val();
+            BindMoneyTransferReport(employeId,fromDate);
+        });
+    });
+    function BindMoneyTransferReport(employeId, fromDate) {
+        $("#tblMoneyTransfer").empty();
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Content("~/Reports/MoneyTransferReport")',
+            dataType: 'json',
+            data: { EMPLOYEEID: employeId,DATEFROM:fromDate },
+            success: function (result) {
+                var data = JSON.parse(result);
+                console.log(data);
+                var uniqueArray = [];
+                for (var j = 0; j < data.length; j++) {
+                    if (uniqueArray.indexOf(data[j].Id) == -1) {
+                        uniqueArray.push(data[j]);
+                    }
+                }
+                var d = new Date();
+
+                var month = d.toLocaleString('default', { month: 'short' });
+                var day = d.getDate();
+                var output = (day < 10 ? '0' : '') + day + '-'  + month + '-' + d.getFullYear();
+                    //var output = d.getFullYear() + '/' +
+                //    (month < 10 ? '0' : '') + month + '/' +
+                //    (day < 10 ? '0' : '') + day;
+                var row;
+                    for (var i = 0; i < uniqueArray.length; i++) {
+                    var payMode = "N";
+                    let ifsc = "";
+                    data[i].ifscCode != null ? ifsc = uniqueArray[i].ifscCode.substring(0, 3) : ifsc = "";
+                    ifsc == "ICI" ? payMode = "I" : payMode = "N";
+                    row = '<tr>';
+                    row += '<td>155005000760</td>';
+                    row += '<td>' + uniqueArray[i].accountNo + '</td>';
+                    row += '<td>' + uniqueArray[i].name + '</td>';
+                    row += '<td>' + uniqueArray[i].actualSalary + '</td>';
+                    row += '<td style="text-align:center;">' + payMode + '</td>';
+                        row += '<td>' + output + '</td>';
+                    row += '<td>' + uniqueArray[i].ifscCode + '</td>';
+                    row += '</tr>';
+                    $("#tblMoneyTransfer").append(row);
+                }
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    }
+    function exportToExcel() {
+    var wscols = [
+      { wch: 10 },
+      { wch: 20 },
+      { wch: 15 },
+      { wch: 15 },
+      { wch: 15 },
+    ];
+    var wb = XLSX.utils.table_to_book(document.getElementById("tbladvanceHead"), {
+      sheet: "Advance",
+      raw: true,
+    });
+    wb.Sheets["Advance"]["!cols"] = wscols;
+    var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+        saveAs(new Blob([s2ab(wbout)], { type: "application/octet-stream" }), "Money Transfer.xlsx");
+  }
+    function s2ab(s) {
+        var buf = new ArrayBuffer(s.length);
+        var view = new Uint8Array(buf);
+        for (var i = 0; i < s.length; i++) {
+            view[i] = s.charCodeAt(i) & 0xFF;
+        }
+        return buf;
+    }
+</script>

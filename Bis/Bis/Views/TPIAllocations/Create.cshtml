@@ -1,0 +1,138 @@
+﻿@model Bis.Models.TPIAllocation
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="card">
+                <div class="card-header header-elements-inline">
+                    <h5 class="card-title">TPIAllocation</h5>
+                    <div class="header-elements">
+                        <div class="list-icons">
+                            @Html.ActionLink("Back to List", "Index", null, htmlAttributes: new { @class = "btn btn-primary" })
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label>Employee ID</label>
+                            @Html.DropDownList("employeeId", null, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.employeeId, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Company Name</label>
+                            @Html.DropDownList("companyId", null, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.companyId, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Vendor</label>
+                            @Html.DropDownList("vendorId", null, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.vendorId, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Location</label>
+                            @Html.DropDownList("locationId", null, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.locationId, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Date</label>
+                            <div class="input-group">
+                                <span class="input-group-prepend">
+                                    <span class="input-group-text"><i class="icon-calendar22"></i></span>
+                                </span>
+                                @Html.EditorFor(model => model.date, new { htmlAttributes = new { @class = "form-control daterange-single-date" } })
+                                @Html.ValidationMessageFor(model => model.date, "", new { @class = "text-danger" })
+
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <label>Status</label>
+                            @Html.DropDownList("status", new List<SelectListItem>
+                            {
+                                new SelectListItem{ Text="New", Value="New"},
+                                new SelectListItem{ Text="InProgress", Value="InProgress"},
+                                new SelectListItem{ Text="Completed", Value="Completed"}
+                            }, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.status, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <label>Remarks</label>
+                            <div>
+                                @Html.TextAreaFor(model => model.remark, new { style = "width:100%" })
+                                @Html.ValidationMessageFor(model => model.remark, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="text-right">
+                        <button type="submit" value="Create" class="btn btn-success">Submit</button>
+                        @Html.ActionLink("Cancel", "Index", null, htmlAttributes: new { @class = "btn btn-primary" })
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#companyId").change(function () {
+            var name = $(companyId).find('option:selected').val();
+            VendorById(name);
+        })
+        $("#vendorId").change(function () {
+            var location = $(vendorId).find('option:selected').val();
+            LocationById(location);
+        })
+    });
+    function VendorById(name) {
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Content("~/Reports/VendorByCompanyId")',
+            dataType: 'json',
+            data: { NAME: name },
+            success: function (result) {
+                var data = JSON.parse(result);
+                debugger
+                $("#vendorId").empty();
+                for (var i = 0; i < data.length; i++) {
+                    $("#vendorId").append("<option value='" + data[i].ID + "'>" + data[i].NAME
+                        + "</option>");
+                }
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    };
+
+    function LocationById(location) {
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Content("~/Reports/VendorByLocationId")',
+            dataType: 'json',
+            data: { LOCATION: location },
+            success: function (result) {
+                var data = JSON.parse(result);
+                debugger
+                $("#locationId").empty();
+                for (var i = 0; i < data.length; i++) {
+                    $("#locationId").append("<option value='" + data[i].ID + "'>" + data[i].LOCATION
+                        + "</option>");
+                }
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    };
+</script>

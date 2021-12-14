@@ -1,0 +1,96 @@
+﻿@model IEnumerable<Bis.Models.TPIAllocation>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header header-elements-inline">
+                <h5 class="card-title">TPIAllocation</h5>
+                <div class="header-elements">
+                    <div class="list-icons">
+                        @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+                        @*<a href="/Users/Create" class="btn btn-primary">Add</a>*@
+                    </div>
+                </div>
+            </div>
+            <table class="table datatable-basic" id="tblData">
+                <thead>
+                    <tr>
+                        <th>
+                            Company
+                        </th>
+                        <th>
+                            Vendor
+                        </th>
+                        <th>
+                            Employee
+                        </th>
+                        <th>
+                            TPI No
+                        </th>
+                        <th>
+                            Date
+                        </th>
+                        <th>
+                            Start Date
+                        </th>
+                        <th>
+                            Finish Date
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                        <th>
+                            Action
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Company.companyName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Vendor.name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Employee.employeeId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.title)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.date)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.start)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.finish)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.status)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+                                @Html.ActionLink("Details", "Details", new { id = item.id }) |
+                                @Html.ActionLink("Delete", "Delete", new { id = item.id }, new { onclick = "return confirm('Are sure to delete this item?');" })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#tblData").dataTable();
+    });
+</script>

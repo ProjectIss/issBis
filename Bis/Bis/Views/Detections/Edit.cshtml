@@ -1,0 +1,130 @@
+﻿@model Bis.Models.Detection
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.id)
+            <div class="card">
+                <div class="card-header header-elements-inline">
+                    <h5 class="card-title">Edit Deduction</h5>
+                    <div class="header-elements">
+                        <div class="list-icons">
+                            @Html.ActionLink("Back to List", "Index", null, htmlAttributes: new { @class = "btn btn-primary" })
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label>Employee ID</label>
+                            @Html.DropDownList("employeeId", null, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.employeeId, "", new { @class = "text-danger" })
+                            <span id="spanName" style="color:blueviolet; font-size:medium"></span>
+                            <span id="spanCategory" style="color:blueviolet; font-size:medium"></span>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <label>Date </label>
+                            <div class="input-group">
+                                <span class="input-group-prepend">
+                                    <span class="input-group-text"><i class="icon-calendar22"></i></span>
+                                </span>
+                                @Html.TextBoxFor(model => model.date, new { data_uk_datepicker = "{0:dd / MM / yyyy}", @class = "form-control daterange-single-date" })
+                                @Html.ValidationMessageFor(model => model.date, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Advance</label>
+                            @Html.EditorFor(model => model.advance, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.advance, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Loan</label>
+                            @Html.EditorFor(model => model.loan, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.loan, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Bonus</label>
+                            @Html.EditorFor(model => model.bonus, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.bonus, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <label>TDS</label>
+                            @Html.EditorFor(model => model.tds, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.tds, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Certification Fees</label>
+                            @Html.EditorFor(model => model.certificationFees, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.certificationFees, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Travel Allowance</label>
+                            @Html.EditorFor(model => model.travelAllowance, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.travelAllowance, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Other Allowance</label>
+                            @Html.EditorFor(model => model.otherAllowance, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.otherAllowance, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Cash Voucher</label>
+                            @Html.EditorFor(model => model.cashVoucher, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.cashVoucher, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Remak</label>
+                            <div>
+                                @Html.TextAreaFor(model => model.remak, new { style = "width:100%" })
+                                @Html.ValidationMessageFor(model => model.remak, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="text-right">
+                        <button type="submit" value="Create" class="btn btn-success">Submit</button>
+                        @Html.ActionLink("Cancel", "Index", null, htmlAttributes: new { @class = "btn btn-primary" })
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#employeeId").change(function () {
+            var a = $(employeeId).find('option:selected').val();
+            EmployeeDetailByID(a);
+        })
+    });
+    function EmployeeDetailByID(category) {
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Content("~/Reports/EmployeeDetailsByID")',
+            dataType: 'json',
+            data: { CATEGORY: category },
+            success: function (result) {
+                var data = JSON.parse(result);
+                $("#spanName").text(data[0].name+" - ");
+                $("#spanCategory").text(data[0].Emp_category);
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    }
+</script>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

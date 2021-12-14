@@ -1,0 +1,126 @@
+﻿@model Bis.Models.Detection
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+
+<div class="row">
+    <div class="col-md-12">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="card">
+                <div class="card-header header-elements-inline">
+                    <h5 class="card-title">Delete Deducion</h5>
+                    <h3 style="text-align:center;color:red">Are you sure you want to delete this?</h3>
+                    <div class="header-elements">
+                        <div class="list-icons">
+                            @Html.ActionLink("Back to List", "Index", null, htmlAttributes: new { @class = "btn btn-primary" })
+                            <input type="submit" value="Delete" class="btn btn-danger" />
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <dl class="dl-horizontal">
+                            <dt>
+                                <label>Employee ID</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.Employee.employeeId)
+                            </dd>
+
+                            <dt>
+                                <label>Date</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.date)
+                            </dd>
+
+                            <dt>
+                                <label>Advance</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.advance)
+                            </dd>
+
+                            <dt>
+                                <label>Loan</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.loan)
+                            </dd>
+
+                            <dt>
+                                <label>Bonus</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.bonus)
+                            </dd>
+
+                            <dt>
+                                <label>TDS</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.tds)
+                            </dd>
+
+                            <dt>
+                                <label>Certification Fees</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.certificationFees)
+                            </dd>
+
+                            <dt>
+                                <label>Travel Allowance</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.travelAllowance)
+                            </dd>
+
+                            <dt>
+                                <label>Other Allowance</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.otherAllowance)
+                            </dd>
+
+                            <dt>
+                                <label>Cash Voucher</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.cashVoucher)
+                            </dd>
+
+                            <dt>
+                                <label>Remark</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.remak)
+                            </dd>
+
+                        </dl>
+                    </div>
+
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+

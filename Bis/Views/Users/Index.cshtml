@@ -1,0 +1,76 @@
+﻿@model IEnumerable<Bis.Models.User>
+
+@{
+    ViewBag.Title = "Users";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header header-elements-inline">
+                <h5 class="card-title">Users</h5>
+                <div class="header-elements">
+                    <div class="list-icons">
+                        <a href="/Users/Create" class="btn btn-primary">Create</a>
+                    </div>
+                </div>
+            </div>
+            <table class="table datatable-basic" id="tblData">
+                <thead>
+                    <tr>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Employee Id
+                        </th>
+                        <th>
+                            Role
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                        <th>
+                            Last Login
+                        </th>
+                        <th>
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.username)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.role)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.status)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.lastLogin)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+                                @Html.ActionLink("Details", "Details", new { id = item.id }) |
+                                @Html.ActionLink("Delete", "Delete", new { id = item.id }, new { onclick = "return confirm('Are sure to delete this item?');" })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#tblData").dataTable();
+    });
+</script>

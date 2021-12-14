@@ -1,0 +1,306 @@
+﻿@model Bis.Models.TPICall
+
+@{
+    ViewBag.Title = "Details";
+}
+
+
+<div class="row">
+    <div class="col-md-12">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="card">
+                <div class="card-header header-elements-inline">
+                    <h5 class="card-title">Details TPICall</h5>
+                    <div class="header-elements">
+                        <div class="list-icons">
+                            @Html.ActionLink("Back to List", "Index", null, htmlAttributes: new { @class = "btn btn-primary" })
+                            @Html.ActionLink("Edit", "Edit", new { id = Model.id }, new { @class = "btn btn-success" })
+                        </div>
+                    </div>
+                </div>
+                @*<div class="card-body">
+                    <div class="row">
+                        <dl class="dl-horizontal">
+                            <dt>
+                                <label>Company Name</label>
+                            </dt>
+
+                         
+                            <dt>
+                                <label>Date</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.date)
+                            </dd>
+
+                            <dt>
+                                <label>Reporting QC</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.reportingQC)
+                            </dd>
+
+                            <dt>
+                                <label>Plant</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.plant)
+                            </dd>
+
+                            <dt>
+                                <label>Product Group</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.productGroup)
+                            </dd>
+
+                            <dt>
+                                <label>In Time</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.inTime)
+                            </dd>
+
+                            <dt>
+                                <label>Offering Time</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.offeringTime)
+                            </dd>
+
+                            <dt>
+                               Out Time
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.outTime)
+                            </dd>
+
+                            <dt>
+                                <label>IDLE Time</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.idleTime)
+                            </dd>
+
+                            <dt>
+                                <label>Days</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.days)
+                            </dd>
+
+                            <dt>
+                                <label>Total QTY Offerd</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.totalQTYoffered)
+                            </dd>
+
+                            <dt>
+                                <label>No of Ok Casting</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.noofOkCasting)
+                            </dd>
+
+                            <dt>
+                                <label>FTP</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.ftp)
+                            </dd>
+
+                            <dt>
+                                <label>STP</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.stp)
+                            </dd>
+
+                            <dt>
+                                <label>RW</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.rw)
+                            </dd>
+
+                            <dt>
+                                <label>Hold</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.hold)
+                            </dd>
+
+                            <dt>
+                                <label>Rejected</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.rejected)
+                            </dd>
+
+                            <dt>
+                                <label>Scope Inspection</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.scopeInspection)
+                            </dd>
+
+                            <dt>
+                                <label>Status</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.status)
+                            </dd>
+
+                        </dl>
+                    </div>
+                   
+                </div>*@
+
+                <div class="card-body">
+                    @*<div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">Company Name</label>:
+                        <div class="col-lg-9">
+                            @Html.DisplayFor(model => model.)
+                        </div>
+                    </div>*@
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">Date</label>:
+                        <div class="col-lg-9">
+                            @Html.DisplayFor(model => model.date)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">Reporting QC</label>:
+                        <div class="col-lg-9">
+                           @Html.DisplayFor(model => model.reportingQC)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">Plant</label>:
+                        <div class="col-lg-9">
+                            @Html.DisplayFor(model => model.plant)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">Product Group</label>:
+                        <div class="col-lg-9">
+                            @Html.DisplayFor(model => model.productGroup)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">In Time</label>:
+                        <div class="col-lg-9">
+                            @Html.DisplayFor(model => model.inTime)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">Offering Time</label>:
+                        <div class="col-lg-9">
+                            @Html.DisplayFor(model => model.offeringTime)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">Out Time</label>:
+                        <div class="col-lg-9">
+                            @Html.DisplayFor(model => model.outTime)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">IDLE Time</label>:
+                        <div class="col-lg-9">
+                            @Html.DisplayFor(model => model.idleTime)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">Days</label>:
+                        <div class="col-lg-9">
+                            @Html.DisplayFor(model => model.days)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">Total QTY Offerd</label>:
+                        <div class="col-lg-9">
+                            @Html.DisplayFor(model => model.totalQTYoffered)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">No of Ok Casting</label>:
+                        <div class="col-lg-9">
+                            @Html.DisplayFor(model => model.noofOkCasting)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">FTP</label>:
+                        <div class="col-lg-9">
+                           @Html.DisplayFor(model => model.ftp)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">STP</label>:
+                        <div class="col-lg-9">
+                            @Html.DisplayFor(model => model.stp)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">RW</label>:
+                        <div class="col-lg-9">
+                            @Html.DisplayFor(model => model.rw)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">Hold</label>:
+                        <div class="col-lg-9">
+                           @Html.DisplayFor(model => model.hold)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">Rejected</label>:
+                        <div class="col-lg-9">
+                           @Html.DisplayFor(model => model.rejected)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">Scope Inspection</label>:
+                        <div class="col-lg-9">
+                           @Html.DisplayFor(model => model.scopeInspection)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">Status</label>:
+                        <div class="col-lg-9">
+                           @Html.DisplayFor(model => model.status)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+
+
+

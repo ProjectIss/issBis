@@ -1,0 +1,209 @@
+﻿@model IEnumerable<Bis.Models.Salary>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header header-elements-inline">
+                <h5 class="card-title">Department</h5>
+                <div class="header-elements">
+                    <div class="list-icons">
+                        @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+                        @*<a href="/Users/Create" class="btn btn-primary">Add</a>*@
+                    </div>
+                </div>
+            </div>
+            <table class="table datatable-basic" id="tblData">
+                <thead>
+                    <tr>
+                        <th>
+                            Employee Id
+                        </th>
+                        <th>
+                            Date
+                        </th>
+                        <th>
+                            No of days present
+                        </th>
+                        <th>
+                            Basic Salary
+                        </th>
+                        <th>
+                            Travel Allowance
+                        </th>
+                        <th>
+                            Loan
+                        </th>
+                        <th>
+                            Bonus
+                        </th>
+                        <th>
+                            advance
+                        </th>
+                        @*<th>
+                                TDS
+                            </th>
+                            <th>
+                                Cash Voucher
+                            </th>
+                            <th>
+                                Certification Fees
+                            </th>*@
+                        @*<th>
+                                Total Deduction
+                            </th>*@
+                        <th>
+                            Gross Salary
+                        </th>
+                        <th>
+                            Actual Salary
+                        </th>
+                        <th>
+                            Net Salary
+                        </th>
+                        <th>
+                            Project Salary
+                        </th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Employee.employeeId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.date)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.noOfDaysPresent)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.basicSalary)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.travelAllowance)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.loan)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.bonus)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.advance)
+                            </td>
+                            @*<td>
+                                    @Html.DisplayFor(modelItem => item.tDS)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.cashVoucher)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.certificationFees)
+                                </td>*@
+                            @*<td>
+                                    @Html.DisplayFor(modelItem => item.totalDeduction)
+                                </td>*@
+                            <td>
+                                @Html.DisplayFor(modelItem => item.grossSalary)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.actualSalary)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.netSalary)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.projectSalary)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+                                @Html.ActionLink("Details", "Details", new { id = item.id }) |
+                                @Html.ActionLink("Delete", "Delete", new { id = item.id }, new { onclick = "return confirm('Are sure to delete this item?');" })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+           $('#empCategory').select2();
+        $("#attConsolidate").dataTable();
+        $("#btnSearch").click(function () {
+            $("#tblAttendance").empty();
+            var Date = $('#date').val();
+            var c = document.getElementById("empCategory");
+            var category = c.options[c.selectedIndex].value;
+            BindData(Date, category);
+        });
+
+        $("#btnSave").click(function () {
+            var TableData = new Array();
+            var dateVal = $('#date').val();
+            $('#attConsolidate tr').each(function (row, tr) {
+                TableData[row] = {
+                    "ID": $(tr).find('td:eq(0)').text()
+                    , "EmpId": $(tr).find('td:eq(1)').text()
+                    , "Name": $(tr).find('td:eq(2)').text()
+                    , "Date": $(tr).find('td:eq(3)').text()
+                    , "Status": $(tr).find("select").val()
+                }
+            });
+            TableData.shift();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Content("~/Attendances/SaveAttendance")',
+                dataType: 'json',
+                data: { attendance: TableData, Date: dateVal },
+                success: function (result) {
+                    alert("Saved Successfully");
+                },
+            });
+        });
+    });
+    function BindData(Date, category) {
+          $.ajax({
+            type: 'POST',
+            url: '@Url.Content("~/Attendances/CategoryEmployees")',
+            dataType: 'json',
+            data: { Category: category, Date: Date },
+              success: function (result) {
+                var data = JSON.parse(result);
+                  var row;
+                  var option1;
+                  var option2;
+                  for (var i = 0; i < data.length; i++) {
+                      if (data[i].STATUS == "Absent") {
+                          option1 = "Absent";
+                          option2 = "Present";
+                      }
+                      else {
+                          option1 = "Present";
+                          option2 = "Absent";
+                      }
+                    row = '<tr>';
+                    row += '<td class="attrValue" style="display:none;">' + data[i].ID + '</td>';
+                    row += '<td class="attrValue">' + data[i].EMPLOYEEID + '</td>';
+                    row += '<td class="attrValue">' + data[i].NAME + '</td>';
+                    row += '<td class="attrValue">' + data[i].DATE + '</td>';
+                      row += '<td class="attrValue"><select class="form-control col-xl-10">' + '<option >' + option1 + '</option>' + '<option>' + option2 + '</option>' + '</select></td>';
+                    row += '</tr>';
+                    $("#tblAttendance").append(row);
+                }
+            },
+        });
+    }
+
+</script>

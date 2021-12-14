@@ -1,0 +1,90 @@
+﻿@model Bis.Models.User
+
+@{
+    ViewBag.Title = "Details";
+}
+
+
+<div class="row">
+    <div class="col-md-12">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="card">
+                <div class="card-header header-elements-inline">
+                    <h5 class="card-title">User Details</h5>
+                    <div class="header-elements">
+                        <div class="list-icons">
+                            @Html.ActionLink("Back to List", "Index", null, htmlAttributes: new { @class = "btn btn-primary" })
+                            @Html.ActionLink("Edit", "Edit", new { id = Model.id }, new { @class = "btn btn-success" })
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <dl class="dl-horizontal">
+                            <dt>
+                               <label>Name</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.name)
+                            </dd>
+
+                            <dt>
+                                <label>Employee ID</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.employeeId)
+                            </dd>
+
+                            <dt>
+                                <label>Password</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.password)
+                            </dd>
+
+                            <dt>
+                                <label>Role</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.role)
+                            </dd>
+
+                            <dt>
+                                <label>Status</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.status)
+                            </dd>
+
+                            <dt>
+                                <label>Last LogIn</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.lastLogin)
+                            </dd>
+
+                        </dl>
+                    </div>
+                    <div class="text-right">
+                       
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+
+
+

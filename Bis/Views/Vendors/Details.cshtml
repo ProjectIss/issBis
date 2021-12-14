@@ -1,0 +1,71 @@
+﻿@model Bis.Models.Vendor
+
+@{
+    ViewBag.Title = "Details";
+}
+<div class="row">
+    <div class="col-md-12">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="card">
+                <div class="card-header header-elements-inline">
+                    <h5 class="card-title">Vendor Details</h5>
+                    <div class="header-elements">
+                        <div class="list-icons">
+                            @Html.ActionLink("Back to List", "Index", null, htmlAttributes: new { @class = "btn btn-primary" })
+                            @Html.ActionLink("Edit", "Edit", new { id = Model.id }, new { @class = "btn btn-success" })
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">Company</label>:
+                        <div class="col-lg-9">
+                            @Html.DisplayFor(model => model.Company.companyName)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">Location</label>:
+                        <div class="col-lg-9">
+                            @Html.DisplayFor(model => model.Location.name)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">Name</label>:
+                        <div class="col-lg-9">
+                            @Html.DisplayFor(model => model.name)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">Code</label>:
+                        <div class="col-lg-9">
+                            @Html.DisplayFor(model => model.code)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">Phome</label>:
+                        <div class="col-lg-9">
+                            @Html.DisplayFor(model => model.phone)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">Email</label>:
+                        <div class="col-lg-9">
+                            @Html.DisplayFor(model => model.email)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">Address</label>:
+                        <div class="col-lg-9">
+                            @Html.DisplayFor(model => model.address)
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,105 @@
+﻿@model IEnumerable<Bis.Models.Detection>
+
+@{
+    ViewBag.Title = "Index";
+}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header header-elements-inline">
+                <h5 class="card-title">Deduction</h5>
+                <div class="header-elements">
+                    <div class="list-icons">
+                        @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+                    </div>
+                </div>
+            </div>
+            <table class="table datatable-basic" id="tblData">
+                <thead>
+                    <tr>
+                        <th>
+                           Employee ID
+                        </th>
+                        <th>
+                           Date
+                        </th>
+                        <th>
+                           Advance
+                        </th>
+                        <th>
+                            Loan
+                        </th>
+                        <th>
+                          Bonus
+                        </th>
+                        <th>
+                           TDS
+                        </th>
+                        <th>
+                            Certification Fees
+                        </th>
+                        <th>
+                           Cash Voucher
+                        </th>
+                        <th>
+                           Remak
+                        </th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Employee.employeeId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.date)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.advance)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.loan)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.bonus)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.tds)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.certificationFees)
+                            </td>
+                            @*<td>
+                                @Html.DisplayFor(modelItem => item.travelAllowance)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.otherAllowance)
+                            </td>*@
+                            <td>
+                                @Html.DisplayFor(modelItem => item.cashVoucher)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.remak)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+                                @Html.ActionLink("Details", "Details", new { id = item.id }) |
+                                @Html.ActionLink("Delete", "Delete", new { id = item.id }, new { onclick = "return confirm('Are sure to delete this item?');" })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#tblData").dataTable();
+    });
+</script>
+
+

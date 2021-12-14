@@ -1,0 +1,79 @@
+﻿@model IEnumerable<Bis.Models.shift>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header header-elements-inline">
+                <h5 class="card-title">Shift</h5>
+                <div class="header-elements">
+                    <div class="list-icons">
+                        @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+                        @*<a href="/shifts/Create" class="btn btn-primary">Create</a>*@
+                    </div>
+                </div>
+            </div>
+            <table class="table datatable-basic" id="tblData">
+                <tr>
+                    <th>
+                        Id
+                    </th>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Starting Time
+                    </th>
+                    <th>
+                        Ending Time
+                    </th>
+                    <th>
+                        Over Time
+                    </th>
+
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartingTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndingTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OverTime)
+                    </td>
+
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    </td>
+                </tr>
+                }
+
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+   $(function () {
+       $("#tblData").dataTable();
+   });
+
+</script>

@@ -1,0 +1,158 @@
+﻿@model Bis.Models.Company
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+
+
+<div class="row">
+    <div class="col-md-12">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="card">
+                <div class="card-header header-elements-inline">
+                    <h5 class="card-title">Delete Company</h5>
+                    <h3 style="text-align:center">Are you sure you want to delete this?</h3>
+                    <div class="header-elements">
+                        <div class="list-icons">
+                            @Html.ActionLink("Back to List", "Index", null, htmlAttributes: new { @class = "btn btn-primary" })
+                            <input type="submit" value="Delete" class="btn btn-primary" />
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <dl class="dl-horizontal">
+                            <dt>
+                                <label>Name</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.Location.name)
+                            </dd>
+
+                            <dt>
+                                <label>Company Name</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.companyName)
+                            </dd>
+                            <dt>
+                                <label>Company Category</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.companyCategoryId)
+                            </dd>
+
+                            <dt>
+                                <label>Phone NO</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.phoneNo)
+                            </dd>
+
+                            <dt>
+                                <label>Company Description</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.companyDescription)
+                            </dd>
+
+                            <dt>
+                                <label>Company Address</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.companyAddress)
+                            </dd>
+
+                            <dt>
+                                <label>Email</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.email)
+                            </dd>
+
+                            <dt>
+                                <label>GSTIN</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.gSTIN)
+                            </dd>
+
+                            <dt>
+                                <label>Pin Code</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.pinCode)
+                            </dd>
+
+                            <dt>
+                                <label>State Code</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.stateCode)
+                            </dd>
+
+                            <dt>
+                                <label>City Code</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.cityCode)
+                            </dd>
+
+                            <dt>
+                                <label>Vendor Code</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.vendorCode)
+                            </dd>
+
+                            <dt>
+                                <label>State</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.state)
+                            </dd>
+
+                            <dt>
+                                <label>City</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.city)
+                            </dd>
+
+                            <dt>
+                                <label>Name</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.companyDetails)
+                            </dd>
+
+                        </dl>
+                    </div>
+                 
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+

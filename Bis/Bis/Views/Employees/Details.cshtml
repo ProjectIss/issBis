@@ -1,0 +1,311 @@
+﻿@model Bis.Models.Employee
+
+@{
+    ViewBag.Title = "Details";
+}
+
+
+<div class="row">
+    <div class="col-md-12">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="card">
+                <div class="card-header header-elements-inline">
+                    <h5 class="card-title">Employee Details</h5>
+                    <div class="header-elements">
+                        <div class="list-icons">
+
+                            @Html.ActionLink("Back to List", "Index", null, htmlAttributes: new { @class = "btn btn-primary" })
+                            @Html.ActionLink("Edit", "Edit", new { id = Model.id }, new { @class = "btn btn-success" })
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="form-group row">
+                                <label class="col-lg-2 font-weight-bold">Category Name</label>:
+                                <div class="col-lg-9">
+                                    @Html.DisplayFor(model => model.Category.name)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-2 font-weight-bold">Department Name</label>:
+                                <div class="col-lg-9">
+                                    @Html.DisplayFor(model => model.Department.name)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-2 font-weight-bold">SubCategory Name</label>:
+                                <div class="col-lg-9">
+                                    @Html.DisplayFor(model => model.SubCategory.name)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-2 font-weight-bold">Employee ID</label>:
+                                <div class="col-lg-9">
+                                    @Html.DisplayFor(model => model.employeeId)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-2 font-weight-bold">Name</label>:
+                                <div class="col-lg-9">
+                                    @Html.DisplayFor(model => model.name)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-2 font-weight-bold">Father Name</label>:
+                                <div class="col-lg-9">
+                                    @Html.DisplayFor(model => model.fatherNmae)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-2 font-weight-bold">Age</label>:
+                                <div class="col-lg-9">
+                                    @Html.DisplayFor(model => model.age)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-2 font-weight-bold">Gender</label>:
+                                <div class="col-lg-9">
+                                    @Html.DisplayFor(model => model.gender)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-2 font-weight-bold">DOB</label>:
+                                <div class="col-lg-9">
+                                    @Html.DisplayFor(model => model.dob)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-2 font-weight-bold">Marital Status</label>:
+                                <div class="col-lg-9">
+                                    @Html.DisplayFor(model => model.maritalStatus)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-2 font-weight-bold">Email</label>:
+                                <div class="col-lg-9">
+                                    @Html.DisplayFor(model => model.email)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-2 font-weight-bold">Phone No</label>:
+                                <div class="col-lg-9">
+                                    @Html.DisplayFor(model => model.phoneNumber)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-2 font-weight-bold">Adhar No</label>:
+                                <div class="col-lg-9">
+                                    @Html.DisplayFor(model => model.adharNumber)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-2 font-weight-bold">Blood Group</label>:
+                                <div class="col-lg-9">
+                                    @Html.DisplayFor(model => model.bloodGroup)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-2 font-weight-bold">Address</label>:
+                                <div class="col-lg-9">
+                                    @Html.DisplayFor(model => model.address)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-2 font-weight-bold">Communication Address</label>:
+                                <div class="col-lg-9">
+                                    @Html.DisplayFor(model => model.communicationAddress)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-2 font-weight-bold">Designation</label>:
+                                <div class="col-lg-9">
+                                    @Html.DisplayFor(model => model.designation)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-2 font-weight-bold">DOJ</label>:
+                                <div class="col-lg-9">
+                                    @Html.DisplayFor(model => model.doj)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-2 font-weight-bold">Bank Name</label>:
+                                <div class="col-lg-9">
+                                    @Html.DisplayFor(model => model.bankName)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-2 font-weight-bold">Branch Name</label>:
+                                <div class="col-lg-9">
+                                    @Html.DisplayFor(model => model.branchName)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-2 font-weight-bold">Holder Name</label>:
+                                <div class="col-lg-9">
+                                    @Html.DisplayFor(model => model.holderName)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-2 font-weight-bold">Account No</label>:
+                                <div class="col-lg-9">
+                                    @Html.DisplayFor(model => model.accountNo)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-2 font-weight-bold">IFSC Code</label>:
+                                <div class="col-lg-9">
+                                    @Html.DisplayFor(model => model.ifscCode)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-2 font-weight-bold">Pan No</label>:
+                                <div class="col-lg-9">
+                                    @Html.DisplayFor(model => model.panNo)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-2 font-weight-bold">Insurance Category</label>:
+                                <div class="col-lg-9">
+                                    @Html.DisplayFor(model => model.insuranceCategory)
+                                </div>
+                            </div> 
+                            <div class="form-group row">
+                                <label class="col-lg-2 font-weight-bold">ESI</label>:
+                                <div class="col-lg-9">
+                                    @Html.DisplayFor(model => model.esi)
+                                </div>
+                            </div> 
+                            <div class="form-group row">
+                                <label class="col-lg-2 font-weight-bold">PF</label>:
+                                <div class="col-lg-9">
+                                    @Html.DisplayFor(model => model.pf)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-2 font-weight-bold">Institution Name</label>:
+                                <div class="col-lg-9">
+                                    @Html.DisplayFor(model => model.institutionName)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-2 font-weight-bold">Degree</label>:
+                                <div class="col-lg-9">
+                                    @Html.DisplayFor(model => model.degree)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-2 font-weight-bold">Year Of Completion</label>:
+                                <div class="col-lg-9">
+                                    @Html.DisplayFor(model => model.yearofCompletion)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-2 font-weight-bold">University</label>:
+                                <div class="col-lg-9">
+                                    @Html.DisplayFor(model => model.university)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-2 font-weight-bold">Percentage</label>:
+                                <div class="col-lg-9">
+                                    @Html.DisplayFor(model => model.percentage)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-2 font-weight-bold">NDE Qualification Type</label>:
+                                <div class="col-lg-9">
+                                    @Html.DisplayFor(model => model.ndeQualificationType)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-2 font-weight-bold">Expiry Date</label>:
+                                <div class="col-lg-9">
+                                    @Html.DisplayFor(model => model.expiryDate)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-2 font-weight-bold">Industry Name</label>:
+                                <div class="col-lg-9">
+                                    @Html.DisplayFor(model => model.industryName)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-2 font-weight-bold">Salary</label>:
+                                <div class="col-lg-9">
+                                    @Html.DisplayFor(model => model.salary)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-2 font-weight-bold">Period From</label>:
+                                <div class="col-lg-9">
+                                    @Html.DisplayFor(model => model.periodFrom)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-2 font-weight-bold">Period To</label>:
+                                <div class="col-lg-9">
+                                    @Html.DisplayFor(model => model.periodTo)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-2 font-weight-bold">Reason</label>:
+                                <div class="col-lg-9">
+                                    @Html.DisplayFor(model => model.reason)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-2 font-weight-bold">Salary Type</label>:
+                                <div class="col-lg-9">
+                                    @Html.DisplayFor(model => model.salaryType)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-2 font-weight-bold">Basic Salary</label>:
+                                <div class="col-lg-9">
+                                    @Html.DisplayFor(model => model.bisSalary)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-2 font-weight-bold">Uniform Issue Date</label>:
+                                <div class="col-lg-9">
+                                    @Html.DisplayFor(model => model.uniformIssueDate)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-2 font-weight-bold">Shoe Issue Date</label>:
+                                <div class="col-lg-9">
+                                    @Html.DisplayFor(model => model.shoeIssueDate)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-2 font-weight-bold">Status</label>:
+                                <div class="col-lg-9">
+                                    @Html.DisplayFor(model => model.status)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-2 font-weight-bold">Grade</label>:
+                                <div class="col-lg-9">
+                                    @Html.DisplayFor(model => model.grade)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <img id="user_img" src="@Model.photo" class="" style="height:150px;width:200px;border:thick" /><br /><br />
+                            @*<a style="height:35px;width:135px"><input id="file_upload" type="file" name="photo" style="padding-left:8%;" onchange="show(this)"></a>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+

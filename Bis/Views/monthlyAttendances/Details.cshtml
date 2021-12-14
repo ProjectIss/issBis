@@ -1,0 +1,66 @@
+﻿@model Bis.Models.monthlyAttendance
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>monthlyAttendance</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Employee.employeeId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Employee.employeeId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.employeeName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.employeeName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.catagory)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.catagory)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.year)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.year)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.month)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.month)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.date)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

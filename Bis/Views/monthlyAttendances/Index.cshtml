@@ -1,0 +1,138 @@
+﻿@model IEnumerable<Bis.Models.monthlyAttendance>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header header-elements-inline">
+                <h5 class="card-title">Monthly Attendance</h5>
+                <div class="header-elements">
+                    <div class="list-icons">
+                        <div class="row">
+                            <div class="col-4">
+                                <select name="empCategory" id="empCategory" class="form-control col-xl-10" required>
+                                    <option value="">-Select Category-</option>
+                                    @foreach (var item in ViewBag.category)
+                                    {
+                                        <option value="@item.id">@item.name </option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-4">
+                                <div class="input-group">
+                                    @*<span class="input-group-prepend">
+                                            <span class="input-group-text"><i class="icon-calendar22"></i></span>
+                                        </span>*@
+                                    <input type="month" id="months" class="form-control" />
+                                    @*<input type="text" id="date" class="form-control daterange-single-date">*@
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <button type="button" class="btn btn-primary" id="btnSearch"> Show</button>
+                                <button type="button" class="btn btn-primary" id="btnSave"> Save</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="dt_colVis_buttons"></div>
+            <table class="table datatable-basic table-bordered table-striped table-hover" id="attConsolidate">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Employee ID</th>
+                        <th>Employee Name</th>
+
+                        <th>Month </th>
+                        <th>PF Attendance</th>
+                        <th style="text-align:center">
+                            Status
+                        </th>
+                        
+                    </tr>
+                    <tr>
+                        <th colspan="5">
+                            
+                        </th>
+                        <th style="text-align:center">Presense</th>
+                        <th style="text-align:center"> Absense</th>
+                    </tr>
+                </thead>
+                <tbody id="tblAttendance">
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+<script>
+
+    $(function () {
+           $('#empCategory').select2();
+        $("#btnSearch").click(function () {
+            $("#tblAttendance").empty();
+            var Date = $('#months').val();
+            var c = document.getElementById("empCategory");
+            var category = c.options[c.selectedIndex].value;
+            BindData(Date, category);
+        });
+
+        $("#btnSave").click(function () {
+            var TableData = new Array();
+            var dateVal = $('#months').val();
+            $('#attConsolidate tr').each(function (row, tr) {
+                TableData[row] = {
+                    "ID": $(tr).find('td:eq(0)').text()
+                    , "EmpId": $(tr).find('td:eq(1)').text()
+                    , "Name": $(tr).find('td:eq(2)').text()
+                    , "Date": $(tr).find('td:eq(3)').text()
+                    , "PFAttendance": $(tr).find('.PFAttendance').val()
+                    , "present": $(tr).find('.persent').val()
+                    , "abosent": $(tr).find('.absent').val()
+                }
+            });
+            TableData.shift();
+            console.log(TableData);
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Content("~/monthlyAttendances/SaveAttendance")',
+                dataType: 'json',
+                data: { attendance: TableData, Date: dateVal },
+                success: function (result) {
+                    alert("Saved Successfully");
+                },
+            });
+        });
+    });
+    function BindData(Date, category) {
+          $.ajax({
+            type: 'POST',
+            url: '@Url.Content("~/monthlyAttendances/CategoryEmployees")',
+            dataType: 'json',
+            data: { Category: category, Date: Date },
+              success: function (result) {
+                  var $dt_tableExport = $('#attConsolidate'),
+                     table_export = $dt_tableExport.DataTable();
+                    table_export.clear();
+                  $.each(JSON.parse(result), function (i, item) {
+                      table_export.row.add([
+                          item.ID
+                           , item.EMPLOYEEID
+                          , item.NAME
+                          , Date
+                          , `<input type=number class=PFAttendance value = ${item.PFAttendance} max=31>`
+                          , `<input type=number class=persent value = ${item.present} max=31>`
+                          , `<input type=number class=absent value = ${item.abosent} max=31>`
+                        ]);
+                    });
+                    table_export.draw();
+            },
+        });
+    }
+
+</script>

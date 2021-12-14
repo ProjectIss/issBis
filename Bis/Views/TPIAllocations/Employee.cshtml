@@ -1,0 +1,38 @@
+﻿@model IEnumerable<Bis.Models.TPIAllocation>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-6">
+
+            <div class="@(item.status == "New"? "bg-primary text-white": item.status=="InProgress"? "card bg-danger text-white" : "card bg-success text-white")">
+                <div class="card-header header-elements-inline">
+                    <h6 class="card-title"><b>@Html.DisplayFor(modelItem => item.title) <span>( @Html.DisplayFor(modelItem => item.status) ) </span></b> </h6>
+                    <div class="header-elements">
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p> @Html.DisplayFor(modelItem => item.Company.companyName)</p>
+                    <p> @Html.DisplayFor(modelItem => item.Vendor.name)</p>
+                    <p> @Html.DisplayFor(modelItem => item.Location.name)</p>
+                    <p> Date: @Html.DisplayFor(modelItem => item.date)</p>
+                    <p> Start: @Html.DisplayFor(modelItem => item.start)</p>
+                    <p> Finish: @Html.DisplayFor(modelItem => item.finish)</p>
+                    @if (item.status != "Completed")
+                    {
+                        <div class="row">
+                            @Html.ActionLink("NEW TPI CALL", "Create", "TPICalls", null, new { @class = "btn btn-light  col-5" })
+                            <div class="col-1"></div>
+                            @Html.ActionLink("UPDATE STATUS", "Edit", new { id = item.id }, new { @class = "btn btn-light col-5" })
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>

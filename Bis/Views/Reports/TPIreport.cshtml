@@ -1,0 +1,211 @@
+﻿
+@{
+    ViewBag.Title = "TPIreport";
+}
+
+
+<script src="~/assets/js/FileSaver.js"></script>
+<script src="~/assets/js/xlsx.full.min.js"></script>
+<div class="row">
+    <div class="col-md-2">
+        <div class="form-group">
+            <label class="d-block" id="lblctg">Company</label>
+            <select name="company" id="company" class="form-control col-xl-10" required>
+                <option value="">-Select Company-</option>
+                @foreach (var item in ViewBag.company)
+                {
+                    <option value="@item.id">@item.companyName </option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="form-group">
+            <label class="d-block" id="lblctg">Employee Name</label>
+            <select name="employee" id="employee" class="form-control col-xl-10" required>
+                <option value="">-Select Employee-</option>
+                @foreach (var item in ViewBag.employee)
+                {
+                    <option value="@item.Id">@item.Name </option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="form-group">
+            <label>From Date</label>
+            <div class="input-group">
+                <span class="input-group-prepend">
+                    <span class="input-group-text"><i class="icon-calendar22" id="fromicon"></i></span>
+                </span>
+                <input type="text" class="form-control daterange-single-date" id="fromdate">
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="form-group">
+            <label>To Date</label>
+            <div class="input-group">
+                <span class="input-group-prepend">
+                    <span class="input-group-text"><i class="icon-calendar22" id="toicon"></i></span>
+                </span>
+                <input type="text" class="form-control daterange-single-date" id="todate">
+            </div>
+        </div>
+    </div>
+    <div>
+        <button type="button" class="dropdown-item" id="btnSearch" style="background-color:white;margin-top: 27px;margin-left: 11px;background-color: #eee;"><i class="icon-search4"></i> Search</button>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header header-elements-inline">
+        <h5 class="card-title">TPI Report</h5>
+        <div class="header-elements">
+            <div class="list-icons">
+                <button type="button" class="dropdown-item" id="btnxlsx"><i class="icon-file-excel"></i> .xlsx</button>
+                <button type="button" class="dropdown-item" id="btnprint"><i class="icon-printer"></i> Print</button>
+            </div>
+        </div>
+    </div>
+    <table class="table datatable-basic table-bordered table-striped table-hover" id="dailyAttd">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Date </th>
+                <th>Employee Name</th>
+                <th>Company Name</th>
+                <th>Vendor Name</th>
+                <th>Location</th>
+                <th>Visit</th>
+                <th>Stay</th>
+                <th>VisitCharges</th>
+                <th>Stay Charges</th>
+            </tr>
+        </thead>
+        <tbody id="tblreport"></tbody>
+    </table>
+</div>
+<script>
+    $(function () {
+
+        $("#company").select2();
+        $("#employee").select2();
+        $("#btnSearch").click(function () {
+            debugger
+            var formatDate = $('#fromdate').val().split('/');
+            var fromDate = formatDate[2] + "-" + formatDate[1] + "-" + formatDate[0];
+            var formatToDate = $('#todate').val().split('/');
+            var toDate = formatToDate[2] + "-" + formatToDate[1] + "-" + formatToDate[0];
+            var d = document.getElementById("company");
+            var company = d.options[d.selectedIndex].value;
+
+            var e = document.getElementById("employee");
+            var employee = e.options[e.selectedIndex].value;
+            Connsolidate(fromDate, toDate, company, employee);
+
+        });
+        $("#btnprint").click(function () {
+            printData();
+        });
+        $('#btnxlsx').click(function () {
+            exportToExcel();
+        });
+
+    });
+    function Connsolidate(fromDate, toDate, company, employee) {
+        $("#tblreport").empty();
+        $.ajax({
+            type: 'POST',
+
+            url: '@Url.Content("~/Reports/TPIreports")',
+            dataType: 'json',
+            data: { fromDate: fromDate, toDate: toDate, company: company, employee: employee },
+            success: function (result) {
+                var data = JSON.parse(result);
+                console.log(data);
+                var row;
+                 var visitTotal = 0;
+                let stayTotalCount = 0;
+
+                for (var i = 0; i < data.length; i++) {
+                    var staty = 0;
+                    var stayTotal = 0;
+                    if (data[i].Visit != '' && data[i].Visit != null) {
+                        visitTotal = visitTotal + parseInt(data[i].Visit);
+                    }
+                    if (data[i].stay != '' && data[i].stay != null) {
+                        if (data[i].stay == 'Yes') {
+                            stayTotal = data[i].StayCharge;
+                            staty = 1;
+     stayTotalCount++;
+                        }
+                        else stayTotal = 0;
+                    }
+                    row = '<tr>';
+                    row += '<td>' + data[i].id + '</td>';
+                    row += '<td>' + data[i].date.split('T')[0] + '</td>';
+                    row += '<td>' + data[i].name + '</td>';
+                    row += '<td>' + data[i].companyname + '</td>';
+                    row += '<td>' + data[i].Vendor + '</td>';
+                    row += '<td>' + data[i].location + '</td>';
+                    row += '<td>' + data[i].Visit + '</td>';
+                    row += '<td>' + staty + '</td>';
+                    row += '<td>' + data[i].VisitCharge + '</td>';
+                    row += '<td>' + stayTotal + '</td>';
+                    row += '</tr>';
+                    $("#tblreport").append(row);
+                }
+
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    }
+    function printData()
+    {
+        var divToPrint = document.getElementById('dailyAttd');
+        var htmlToPrint = '' +
+        '<style type="text/css">' +
+        'table, th, td {' +
+        'border:1px solid #000;' +
+        ' border-collapse: collapse;'+
+        'padding:15px;' +
+        '}' +
+        '</style>';
+        htmlToPrint += divToPrint.outerHTML;
+        newWin = window.open("");
+        newWin.document.write(htmlToPrint);
+        newWin.print();
+        newWin.close();
+    }
+    function exportToExcel() {
+        var wscols = [
+            { wch: 10 },
+            { wch: 20 },
+            { wch: 15 },
+            { wch: 15 },
+            { wch: 15 },
+        ];
+        var wb = XLSX.utils.table_to_book(document.getElementById("dailyAttd"), {
+            sheet: "Annexure",
+            raw: true,
+        });
+        wb.Sheets["Annexure"]["!cols"] = wscols;
+        var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+        saveAs(new Blob([s2ab(wbout)], { type: "application/octet-stream" }), "Annexure.xlsx");
+    }
+    function s2ab(s) {
+        var buf = new ArrayBuffer(s.length);
+        var view = new Uint8Array(buf);
+        for (var i = 0; i < s.length; i++) {
+            view[i] = s.charCodeAt(i) & 0xFF;
+        }
+        return buf;
+    }
+</script>
+
+
+
+

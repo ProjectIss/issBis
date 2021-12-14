@@ -1,0 +1,168 @@
+﻿
+@{
+    ViewBag.Title = "ShiftReport";
+}
+
+<script src="~/assets/js/FileSaver.js"></script>
+<script src="~/assets/js/xlsx.full.min.js"></script>
+<div class="row">
+    <div class="col-md-2">
+        <div class="form-group">
+            <label class="d-block" id="lblctg">Shift</label>
+            <select name="empShift" id="empShift" class="form-control col-xl-10" required>
+                <option value="">-Select Shift-</option>
+                @foreach (var item in ViewBag.shift)
+                {
+                    <option value="@item.Value">@item.Text </option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="form-group">
+            <label class="d-block" id="lblctg">Employee Category</label>
+            <select name="empCategory" id="empCategory" class="form-control col-xl-10" required>
+                <option value="">-Select Category-</option>
+                @foreach (var item in ViewBag.category)
+                {
+                    <option value="@item.id">@item.name </option>
+                }
+            </select>
+        </div>
+    </div>
+    @*<div class="col-md-2">
+            <div class="form-group">
+                <label class="d-block" id="lblctg">Company</label>
+                <select name="company" id="company" class="form-control col-xl-10" required>
+                    <option value="">-Select Company-</option>
+                    @foreach (var item in ViewBag.company)
+                    {
+                        <option value="@item.Value">@item.Text </option>
+                    }
+                </select>
+            </div>
+        </div>*@
+   
+    <div class="col-md-2">
+        <div class="form-group">
+            <label>From Date</label>
+            <div class="input-group">
+                <span class="input-group-prepend">
+                    <span class="input-group-text"><i class="icon-calendar22"></i></span>
+                </span>
+                <input type="date" class="form-control" id="fromDate">
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="form-group">
+            <label>To Date</label>
+            <div class="input-group">
+                <span class="input-group-prepend">
+                    <span class="input-group-text"><i class="icon-calendar22"></i></span>
+                </span>
+                <input type="date" class="form-control" id="toDate">
+            </div>
+        </div>
+    </div>
+    <div>
+        <button type="button" class="dropdown-item" id="btnSearch" style="background-color:white;margin-top: 27px;margin-left: 11px;background-color: #eee;"><i class="icon-search4"></i> Search</button>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header header-elements-inline">
+        <h5 class="card-title">Shift Report</h5>
+        <div class="header-elements">
+            <div class="list-icons">
+                <button type="button" class="dropdown-item" id="btnxlsx"><i class="icon-file-excel"></i> .xlsx</button>
+                <button type="button" class="dropdown-item" id="btnprint"><i class="icon-printer"></i> Print</button>
+            </div>
+        </div>
+    </div>
+    <table class="table datatable-basic table-bordered table-striped table-hover" id="dailyAttd">
+        <thead>
+            <tr>
+                <th>Employee ID</th>
+                <th>Employee Name</th>
+                <th>Category</th>
+                <th>Company</th>
+                <th>Shift</th>
+
+            </tr>
+        </thead>
+        <tbody id="tbldailyAttd"></tbody>
+    </table>
+</div>
+<script>
+        $(function () {
+        $("#empShift").select2();
+        $("#empCategory").select2();
+        $("#company").select2();
+            $("#btnSearch").click(function () {
+               
+            var c = document.getElementById("empShift");
+            var shift = c.options[c.selectedIndex].value;
+            var c = document.getElementById("empCategory");
+                var category = c.options[c.selectedIndex].value;
+                var formatDate = $('#fromDate').val().split('-');
+                var fromDate = formatDate[2] + "-" + formatDate[1] + "-" + formatDate[0];
+                var formatToDate = $('#toDate').val().split('-');
+                var toDate = formatToDate[2] + "-" + formatToDate[1] + "-" + formatToDate[0];
+            var e = document.getElementById("company");
+                var cmpId = 0;// e.options[e.selectedIndex].value;
+                Connsolidate(shift, category, fromDate, toDate, cmpId);
+        });
+        $("#btnprint").click(function () {
+            printData();
+        });
+        $('#btnxlsx').click(function () {
+            exportToExcel();
+            });
+            $("#empShift").html(items.join(' '));
+        $('#empCategory').change(function () {
+           var id = $(empCategory).find('option:selected').val();
+            var url = '@Url.Content("~/Reports/AnnexureCat")';
+            var data1 = { "Id": id };
+            $.post(url, data1, function (data) {
+                var items = [];
+                //items.push("<option value=" + 0 + ">" + "-Select Employee-" + "</option>");
+                for (var i = 0; i < data.length; i++) {
+                    items.push("<option value=" + data[i].Value + ">" + data[i].Text + "</option>");
+                }
+                $("#company").html(items.join(' '));
+            })
+        })
+        });
+        function Connsolidate(shift,category,ffrom,today, company) {
+
+        $("#tbldailyAttd").empty();
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Content("~/Reports/ShiftReport")',
+            dataType: 'json',
+            data: { shift: shift, fromDate: ffrom, toDate: today, category: category, company: company },
+            success: function (result) {
+                var data = JSON.parse(result);
+                var row;
+                console.log(result)
+                for (var i = 0; i < data.length; i++) {
+                    row = '<tr>';
+                    row += '<td>' + data[i].employeeid + '</td>';
+                    row += '<td>' + data[i].name + '</td>';
+
+                    row += '<td>' + data[i].category + '</td>';
+                    row += '<td>' + data[i].companyName + '</td>';
+                    row += '<td>' + data[i].shifts + '</td>';
+                   
+                    row += '</tr>';
+                    $("#tbldailyAttd").append(row);
+                }
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    }
+</script>
+

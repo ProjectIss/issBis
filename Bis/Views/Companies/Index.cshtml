@@ -1,0 +1,122 @@
+﻿@model IEnumerable<Bis.Models.Company>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header header-elements-inline">
+                <h5 class="card-title">Company</h5>
+                <div class="header-elements">
+                    <div class="list-icons">
+                        @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+                        @*<a href="/Users/Create" class="btn btn-primary">Add</a>*@
+                    </div>
+                </div>
+            </div>
+            <table class="table datatable-basic" id="tblData">
+                <thead>
+                    <tr>
+                        <th>
+                            Company Name
+                        </th>
+                        <th>
+                            Company Category
+                        </th>
+                        <th>
+                            Phone No
+                        </th>
+                        <th>
+                            Company Address
+                        </th>
+                        <th>
+                            Email
+                        </th>
+                        @*<th>
+                            GSTIN
+                        </th>*@
+                        <th>
+                            Pin Code
+                        </th>
+
+                        <th>
+                            City
+                        </th>
+
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            @*<td>
+                                    @Html.DisplayFor(modelItem => item.CompanyCategory.name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Location.name)
+                                </td>*@
+                            <td>
+                                @Html.DisplayFor(modelItem => item.companyName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CompanyCategory.name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.phoneNo)
+                            </td>
+                            @*<td>
+                                    @Html.DisplayFor(modelItem => item.companyDescription)
+                                </td>*@
+                            <td>
+                                @Html.DisplayFor(modelItem => item.companyAddress)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.email)
+                            </td>
+                            @*<td>
+                                @Html.DisplayFor(modelItem => item.gSTIN)
+                            </td>*@
+                            <td>
+                                @Html.DisplayFor(modelItem => item.pinCode)
+                            </td>
+                            @*<td>
+                                    @Html.DisplayFor(modelItem => item.stateCode)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.cityCode)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.vendorCode)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.state)
+                                </td>*@
+                            <td>
+                                @Html.DisplayFor(modelItem => item.city)
+                            </td>
+                            @*<td>
+                                    @Html.DisplayFor(modelItem => item.companyDetails)
+                                </td>*@
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+                                @Html.ActionLink("Details", "Details", new { id = item.id }) |
+                                @Html.ActionLink("Delete", "Delete", new { id = item.id }, new { onclick = "return confirm('Are sure to delete this item?');" })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#tblData").dataTable();
+    });
+</script>
+
+

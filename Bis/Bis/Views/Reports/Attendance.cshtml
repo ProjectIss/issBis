@@ -1,0 +1,96 @@
+﻿
+@{
+    ViewBag.Title = "Attendance";
+}
+
+<script src="~/global_assets/js/demo_pages/picker_date.js"></script>
+<h2>Attendance</h2>
+<div class="card">
+    <div class="col-12">
+        <div class="row">
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label class="d-block">Employee Category</label>
+                    <select name="empCategory" id="empCategory" class="form-control col-xl-10" required>
+                        <option value="">-Select Category-</option>
+                        @foreach (var item in ViewBag.category)
+                        {
+                            <option value="@item.id">@item.name </option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>From Date</label>
+                    <div class="input-group">
+                        <span class="input-group-prepend">
+                            <span class="input-group-text"><i class="icon-calendar22"></i></span>
+                        </span>
+                        <input type="text" class="form-control daterange-single">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>To Date</label>
+                    <div class="input-group">
+                        <span class="input-group-prepend">
+                            <span class="input-group-text"><i class="icon-calendar22"></i></span>
+                        </span>
+                        <input type="text" class="form-control daterange-single">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header header-elements-inline">
+                <h5 class="card-title">Attendance Process</h5>
+                <div class="header-elements">
+                    <div class="list-icons">
+                        <a href="#" class="dropdown-item"><i class="icon-search4"></i> Search</a>
+                        <a href="#" class="dropdown-item"><i class="icon-file-excel"></i> .xlsx</a>
+                        <a href="#" class="dropdown-item"><i class="icon-printer"></i> Print</a>
+                    </div>
+                </div>
+            </div>
+            <table class="table datatable-basic table-bordered table-striped table-hover" id="tblAttendance">
+                <thead>
+                    <tr>
+                        <th>Employee Name</th>
+                    </tr>
+                </thead>
+                <tbody id="tblData">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+     
+        debugger
+        $("#tblData").empty();
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Content("~/Reports/AttendanceResult")',
+            dataType: 'json',
+            data: { caetory: 'TPI' },
+            success: function (result) {
+                debugger
+                var data = JSON.parse(result);
+                var row;
+                for (var i = 0; i < data.length; i++) {
+                    row = '<tr>';
+                    row += '<td>' + data[i].name + '</td>';
+                    //include rest of the columns
+                    row += '</tr>';
+                    $("#tblData").append(row);
+                }
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    });
+</script>

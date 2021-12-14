@@ -1,0 +1,373 @@
+﻿@model Bis.Models.Employee
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+
+<div class="row">
+    <div class="col-md-12">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="card">
+                <div class="card-header header-elements-inline">
+                    <h5 class="card-title">Delete Employee</h5>
+                    <h3 style="text-align:center;color:red">Are you sure you want to delete this?</h3>
+                    <div class="header-elements">
+                        <div class="list-icons">
+                            @Html.ActionLink("Back to List", "Index", null, htmlAttributes: new { @class = "btn btn-primary" })
+                            <input type="submit" value="Delete" class="btn btn-danger" />
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <dl class="dl-horizontal">
+                            <dt>
+                                <label>Category Name</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.Category.name)
+                            </dd>
+
+                            <dt>
+                                <label>Department Name</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.Department.name)
+                            </dd>
+
+                            <dt>
+                                <label>SubCategory Name</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.SubCategory.name)
+                            </dd>
+
+                            <dt>
+                                <label>Employee ID</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.employeeId)
+                            </dd>
+
+                            <dt>
+                                <label>Name</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.name)
+                            </dd>
+
+                            <dt>
+                                <label>Father Name</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.fatherNmae)
+                            </dd>
+
+                            <dt>
+                                <label>Age</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.age)
+                            </dd>
+
+                            <dt>
+                                <label>Gender</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.gender)
+                            </dd>
+
+                            <dt>
+                                <label>DOB</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.dob)
+                            </dd>
+
+                            <dt>
+                                <label>Marital Status</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.maritalStatus)
+                            </dd>
+
+                            <dt>
+                                <label>Email</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.email)
+                            </dd>
+
+                            <dt>
+                                <label>Phone No</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.phoneNumber)
+                            </dd>
+
+                            <dt>
+                                <label>Adhar No</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.adharNumber)
+                            </dd>
+
+                            <dt>
+                                <label>Blood Group</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.bloodGroup)
+                            </dd>
+
+                            <dt>
+                                <label>Address</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.address)
+                            </dd>
+
+                            <dt>
+                                <label>Communication Address</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.communicationAddress)
+                            </dd>
+
+                            <dt>
+                                <label>Designation</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.designation)
+                            </dd>
+
+                            <dt>
+                                <label>DOJ</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.doj)
+                            </dd>
+
+                            <dt>
+                                <label>Bank Name</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.bankName)
+                            </dd>
+
+                            <dt>
+                                <label>Branch Name</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.branchName)
+                            </dd>
+
+                            <dt>
+                                <label>Holder Name</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.holderName)
+                            </dd>
+
+                            <dt>
+                                <label>Account No</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.accountNo)
+                            </dd>
+
+                            <dt>
+                                <label>IFSC Code</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.ifscCode)
+                            </dd>
+
+                            <dt>
+                                <label>Pan No</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.panNo)
+                            </dd>
+
+                            <dt>
+                                <label>Institution Name</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.institutionName)
+                            </dd>
+
+                            <dt>
+                                <label>Degree</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.degree)
+                            </dd>
+
+                            <dt>
+                                <label>Year Of Completion</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.yearofCompletion)
+                            </dd>
+
+                            <dt>
+                                <label>University</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.university)
+                            </dd>
+
+                            <dt>
+                                <label>Percentage</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.percentage)
+                            </dd>
+
+                            <dt>
+                                <label>NDE Qualification Type</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.ndeQualificationType)
+                            </dd>
+
+                            <dt>
+                                <label>Expiry Date</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.expiryDate)
+                            </dd>
+
+                            <dt>
+                                <label>Industry Name</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.industryName)
+                            </dd>
+
+                            <dt>
+                                <label>Salary</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.salary)
+                            </dd>
+
+                            <dt>
+                                <label>Period From</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.periodFrom)
+                            </dd>
+
+                            <dt>
+                                <label>Period To</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.periodTo)
+                            </dd>
+
+                            <dt>
+                                <label>Reason</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.reason)
+                            </dd>
+
+                            <dt>
+                                <label>Salary Type</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.salaryType)
+                            </dd>
+
+                            <dt>
+                                <label>Basic Salary</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.bisSalary)
+                            </dd>
+
+                            <dt>
+                                <label>Uniform Issue Date</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.uniformIssueDate)
+                            </dd>
+
+                            <dt>
+                                <label>Shoe Issue Date</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.shoeIssueDate)
+                            </dd>
+
+                            <dt>
+                                <label>Status</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.status)
+                            </dd>
+
+                            <dt>
+                                <label>Grade</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.grade)
+                            </dd>
+
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+

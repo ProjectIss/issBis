@@ -1,0 +1,141 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="row">
+    <div class="col-md-2">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card bg-pink-400">
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <h3 class="font-weight-semibold mb-0"> @ViewBag.employeeTotal</h3>
+                            <div class="list-icons ml-auto">
+                            </div>
+                        </div>
+                        <div>
+                            Total Employee
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="card bg-blue-400">
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <h3 class="font-weight-semibold mb-0">@ViewBag.companyTotal</h3>
+                            <div class="list-icons ml-auto">
+
+                            </div>
+                        </div>
+                        <div>
+                            Total Company
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="card bg-blue-400">
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <h3 class="font-weight-semibold mb-0">@ViewBag.totalAbsent</h3>
+                            <div class="list-icons ml-auto">
+
+                            </div>
+                        </div>
+                        <div>
+                            Total Absense Today
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="card bg-blue-400">
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <h3 class="font-weight-semibold mb-0">@ViewBag.totalTPI</h3>
+                            <div class="list-icons ml-auto">
+
+                            </div>
+                        </div>
+                        <div>
+                            Total TPI Calls Today
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-10">
+        <div class="card">
+            <div class="card-header header-elements-inline">
+                <h5 class="card-title">Attendance</h5>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped" style="text-align:center">
+                    <thead>
+                        <tr>
+                            <th rowspan="2">Category</th>
+                            <th colspan="2">Today</th>
+                            <th colspan="2">This Month</th>
+                        </tr>
+                        <tr>
+                            <th>Total Presense</th>
+                            <th>Total Absense</th>
+                            <th>Total Presense</th>
+                            <th>Total Absense</th>
+
+                        </tr>
+                    </thead>
+                    <tbody id="tblhome">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        debugger
+        var fullDate = new Date()
+        console.log(fullDate);
+         var twoDigitMonth = ((fullDate.getMonth().length+1) === 1)? (fullDate.getMonth()+1) : '0' + (fullDate.getMonth()+1);
+        var currentDate = twoDigitMonth + "/" + fullDate.getDate() + "/" + fullDate.getFullYear();
+
+
+        var dt = new Date();
+        var month = dt.getMonth(), year = dt.getFullYear();
+        var st = new Date(year, month, 1);
+        var nd = new Date(year, month + 1, 0);
+        var FirstDay =twoDigitMonth + "/" + st.getDate() + "/" + st.getFullYear();
+        var LastDay =twoDigitMonth + "/" + nd.getDate() + "/" + nd.getFullYear();
+
+        $("#tblhome").empty();
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Content("~/Home/HomeIndex")',
+            dataType: 'json',
+            data: {Date:currentDate,firstDate :FirstDay,lastDate: LastDay},
+            success: function (result) {
+                debugger
+                var data = JSON.parse(result);
+                var row;
+                for (var i = 0; i < data.length; i++) {
+                    row = '<tr>';
+                    row += '<td>' + data[i].Category + '</td>';
+                    row += '<td>' + data[i].Present + '</td>';
+                    row += '<td>' + data[i].Absent + '</td>';
+                    row += '<td>' + data[i].MonthPresent + '</td>';
+                    row += '<td>' + data[i].MonthAbsent + '</td>';
+                    row += '</tr>';
+                    $("#tblhome").append(row);
+                }
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+     });
+</script>
+

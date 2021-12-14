@@ -1,0 +1,62 @@
+﻿@model Bis.Models.Department
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+
+<div class="row">
+    <div class="col-md-12">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="card">
+                <div class="card-header header-elements-inline">
+                    <h5 class="card-title">Delete Department</h5>
+                    <h3 style="text-align:center">Are you sure you want to delete this?</h3>
+                    <div class="header-elements">
+                        <div class="list-icons">
+                            @Html.ActionLink("Back to List", "Index", null, htmlAttributes: new { @class = "btn btn-primary" })
+                            <input type="submit" value="Delete" class="btn btn-primary" />
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <dl class="dl-horizontal">
+                            <dt>
+                                <label>SubCategory Name</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.SubCategory.name)
+                            </dd>
+
+                            <dt>
+                                <label>Name</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.name)
+                            </dd>
+
+                            <dt>
+                                <label>Description</label>
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.description)
+                            </dd>
+
+                        </dl>
+                    </div>
+
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+

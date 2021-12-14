@@ -1,0 +1,129 @@
+﻿@model Bis.Models.Salary
+
+@{
+    ViewBag.Title = "Details";
+}
+
+
+<div class="row">
+    <div class="col-md-12">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="card">
+                <div class="card-header header-elements-inline">
+                    <h5 class="card-title">Details Details</h5>
+                    <div class="header-elements">
+                        <div class="list-icons">
+                            @Html.ActionLink("Back to List", "Index", null, htmlAttributes: new { @class = "btn btn-primary" })
+                            @Html.ActionLink("Edit", "Edit", new { id = Model.id }, new { @class = "btn btn-success" })
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">Employee Id</label>:
+                        <div class="col-lg-9">
+                            @Html.DisplayFor(model => model.Employee.employeeId)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">Date</label>:
+                        <div class="col-lg-9">
+                           @Html.DisplayFor(model => model.date)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">No of Days Present</label>:
+                        <div class="col-lg-9">
+                           @Html.DisplayFor(model => model.noOfDaysPresent)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">Basic Salary</label>:
+                        <div class="col-lg-9">
+                           @Html.DisplayFor(model => model.basicSalary)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">Travel Allowance</label>:
+                        <div class="col-lg-9">
+                           @Html.DisplayFor(model => model.travelAllowance)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">Loan</label>:
+                        <div class="col-lg-9">
+                            @Html.DisplayFor(model => model.loan)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">Bonus</label>:
+                        <div class="col-lg-9">
+                            @Html.DisplayFor(model => model.bonus)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">Advance</label>:
+                        <div class="col-lg-9">
+                           @Html.DisplayFor(model => model.advance)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">TDS</label>:
+                        <div class="col-lg-9">
+                            @Html.DisplayFor(model => model.tDS)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">Cash Voucher</label>:
+                        <div class="col-lg-9">
+                            @Html.DisplayFor(model => model.cashVoucher)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">Certification Fees</label>:
+                        <div class="col-lg-9">
+                            @Html.DisplayFor(model => model.certificationFees)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">Total Deduction</label>:
+                        <div class="col-lg-9">
+                           @Html.DisplayFor(model => model.totalDeduction)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">Gross Salary</label>:
+                        <div class="col-lg-9">
+                           @Html.DisplayFor(model => model.grossSalary)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">Actual Salary</label>:
+                        <div class="col-lg-9">
+                           @Html.DisplayFor(model => model.actualSalary)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">Net Salary</label>:
+                        <div class="col-lg-9">
+                            @Html.DisplayFor(model => model.netSalary)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 font-weight-bold">Project Salary</label>:
+                        <div class="col-lg-9">
+                            @Html.DisplayFor(model => model.projectSalary)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+

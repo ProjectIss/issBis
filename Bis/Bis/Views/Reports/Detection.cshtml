@@ -1,0 +1,161 @@
+﻿
+@{
+    ViewBag.Title = "Detection";
+}
+<script src="~/global_assets/js/demo_pages/picker_date.js"></script>
+<script src="~/assets/js/FileSaver.js"></script>
+<script src="~/assets/js/xlsx.full.min.js"></script>
+<h2>Deduction</h2>
+<div class="card">
+    <div class="col-12">
+        <div class="row">
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>From Date</label>
+                    <div class="input-group">
+                        <span class="input-group-prepend">
+                            <span class="input-group-text"><i class="icon-calendar22"></i></span>
+                        </span>
+                        <input type="text" class="form-control daterange-single-date" id="fromdate">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>To Date</label>
+                    <div class="input-group">
+                        <span class="input-group-prepend">
+                            <span class="input-group-text"><i class="icon-calendar22"></i></span>
+                        </span>
+                        <input type="text" class="form-control daterange-single-date" id="todate">
+                    </div>
+                </div>
+            </div>
+            <div>
+                <button type="button" class="dropdown-item" id="btnSearch" style="margin-top: 27px;margin-left: 11px;background-color: #eee;"><i class="icon-search4"></i> Search</button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header header-elements-inline">
+                <h5 class="card-title">Detection Process</h5>
+                <div class="header-elements">
+                    <div class="list-icons">
+                        @*<button href="#" class="dropdown-item" id="btnSearch"><i class="icon-search4"></i> Search</button>*@
+                        <button href="#" class="dropdown-item" id="exportexcel"><i class="icon-file-excel"></i> .xlsx</button>
+                        <button href="#" class="dropdown-item" id="btnprint"><i class="icon-printer"></i> Print</button>
+                    </div>
+                </div>
+            </div>
+            <table class="table datatable-basic table-bordered table-striped table-hover" id="tbldetection">
+                <thead>
+                    <tr>
+                        <th>Employee ID</th>
+                        <th>Employee Name</th>
+                        <th>Date</th>
+                        <th>Travel Allowance</th>
+                        <th>Loan</th>
+                        <th>Bonus</th>
+                        <th>Advance</th>
+                        <th>TDS</th>
+                        <th>Cash Voucher</th>
+                        <th>Certification Fees</th>
+                        <th>Total Deduction</th>
+                    </tr>
+                </thead>
+                <tbody id="tblDetection">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+
+        $("#exportexcel").click(function () {
+            exportToExcel();
+        });
+
+        $("#btnprint").click(function () {
+            printData();
+        });
+
+         $("#btnSearch").click(function () {
+            var fromDate = $('#fromdate').val();
+            var toDate = $('#todate').val();
+            Deduction(fromDate, toDate);
+        });
+
+    });
+    function Deduction(fromDate, toDate) {
+         $("#tblDetection").empty();
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Content("~/Reports/DeductionReport")',
+            dataType: 'json',
+            data: { FROM: fromDate,TO: toDate },
+            success: function (result) {
+                var data = JSON.parse(result);
+                var row;
+                for (var i = 0; i < data.length; i++) {
+                    row = '<tr>';
+                    row += '<td>' + data[i].employeeid + '</td>';
+                    row += '<td>' + data[i].Name + '</td>';
+                    row += '<td>' + data[i].Date + '</td>';
+                    row += '<td>' + data[i].Travel + '</td>';
+                    row += '<td>' + data[i].Loan + '</td>';
+                    row += '<td>' + data[i].Bonus + '</td>';
+                    row += '<td>' + data[i].Advance + '</td>';
+                    row += '<td>' + data[i].TDS + '</td>';
+                    row += '<td>' + data[i].Cash + '</td>';
+                    row += '<td>' + data[i].Fees + '</td>';
+                    row += '<td>' + data[i].Total + '</td>';
+                    row += '</tr>';
+                    $("#tblDetection").append(row);
+                }
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    }
+
+    function exportToExcel() {
+        var wscols = [
+            { wch: 10 },
+            { wch: 20 },
+            { wch: 15 },
+            { wch: 15 },
+            { wch: 15 },
+            { wch: 15 },
+            { wch: 15 },
+            { wch: 15 },
+            { wch: 15 },
+            { wch: 15 },
+            { wch: 15 },
+        ];
+        var wb = XLSX.utils.table_to_book(document.getElementById("tbldetection"), {
+            sheet: "Detection",
+            raw: true,
+        });
+        wb.Sheets["Detection"]["!cols"] = wscols;
+        var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+        saveAs(new Blob([s2ab(wbout)], { type: "application/octet-stream" }), "Detection.xlsx");
+    }
+
+    function printData() {
+        var divToPrint = document.getElementById('tbldetection');
+        var htmlToPrint = '' +
+            '<style type="text/css">' +
+            'table, th, td {' +
+            'border:1px solid #000;' +
+            ' border-collapse: collapse;' +
+            'padding:15px;' +
+            '}' +
+            '</style>';
+        htmlToPrint += divToPrint.outerHTML;
+        newWin = window.open("");
+        newWin.document.write(htmlToPrint);
+        newWin.print();
+        newWin.close();
+    }
+</script>

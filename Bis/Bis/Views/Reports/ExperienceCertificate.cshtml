@@ -1,0 +1,141 @@
+﻿
+@{
+    ViewBag.Title = "ExperienceCertificate";
+}
+
+<script src="~/assets/js/FileSaver.js"></script>
+<script src="~/assets/js/xlsx.full.min.js"></script>
+
+<h2>Experience Certificate</h2>
+<div class="col-8">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label class="d-block">Employee ID</label>
+                <select name="empCategory" id="empCategory" class="form-control col-xl-10" required>
+                    <option value="">-Select Employee-</option>
+                    @foreach (var item in ViewBag.employeeid)
+                    {
+                        <option value="@item.id">@item.employeeId-@item.name </option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="col-md-4" style="margin-top: 25px;">
+            <div class="list-icons">
+                <button type="button" class="dropdown-item" id="btnSearch" style="background-color: #eee;"><i class="icon-search4"></i> Search</button>
+                <button href="#" class="dropdown-item" id="reload" style="background-color: #eee;"><i class="icon-next"></i>Reload</button>
+                <button href="#" class="dropdown-item" id="btnprint" style="background-color: #eee;"><i class="icon-printer"></i> Print</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card" id="divToPrint">
+    <div class="container-fluid">
+        <div class="row">
+            <div style="text-align:center;margin-left:3%;margin-top:3%;">
+                <h4><strong>TO WHOMSOVER IT MAY CONCERN</strong></h4>
+            </div><br /><br />
+            <div style="margin-left:80%;font-size:18px">
+                <label><strong>Date :</strong></label><label contenteditable="true" id="toDateTitle">(Enter Date)</label><br />
+                <label><strong>Location :</strong></label><label contenteditable="true">(Enter Location)</label><br />
+            </div>
+            <div style="margin-left:3%;font-size:18px">
+                <strong>
+                    Sub:
+                </strong>
+                Certifying the Experience of <b>Mr.<label contenteditable="true" id="name">(Employee Name)</label></b>
+                <br />
+                <br />
+
+                This is to certify that <b>Mr.<label contenteditable="true" id="name1">(Employee Name)</label></b> employed at Bright inspection services  as <b><label contenteditable="true">(Enter Your Position)</label></b> from <b><label contenteditable="true" id="doj">(From Date)</label></b> to <b><label contenteditable="true" id="todate">(To Date)</label></b> in our <b><label contenteditable="true">(Enter Company Name)</label></b> Coimbatore project.
+                During his stay with us he worked as professional and with enthusiasm.He is very organized and timekeeping.His over all performance in our company was good.
+            </div>
+            <br />
+            <div>
+                <div>
+                    <label style="margin-left:40px;font-size:18px">For BIS</label>
+                </div>
+                <br>
+                <div style="margin-left:40px;">
+
+                    <label contenteditable="true">(Enter Your Name)</label>
+                    <br>
+                    ADMIN MANGER<br>
+                    BIS GROUP
+                </div>
+            </div>
+        </div>
+        <br />
+
+    </div>
+</div>
+<script>
+
+    $(function () {
+        $('#empCategory').select2();
+        $('#reload').click(function () {
+            location.reload();
+        });
+         $("#btnprint").click(function () {
+              printData();
+            // window.print();
+        });
+
+        $("#btnSearch").click(function () {
+
+            var id = document.getElementById("empCategory");
+            var category = id.options[id.selectedIndex].value;
+            experience(category);
+        });
+
+    });
+
+    function experience(category) {
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Content("~/Reports/ExperienceCertificateReport")',
+            dataType: 'json',
+            data: { CATEGORY: category },
+            success: function (result) {
+                debugger
+                var data = JSON.parse(result);
+                console.log(data);
+                $("#name").text(data[0].name);
+                $("#name1").text(data[0].name);
+                $("#doj").text(data[0].doj);
+                $("#todate").text(data[0].getdate);
+                $("#toDateTitle").text(data[0].getdate);
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    }
+    function printData() {
+        var divToPrint = document.getElementById('divToPrint');
+        var htmlToPrint = '' +
+            '<style type="text/css">' +
+            'table, th, td, tr {' +
+            'border:1px solid #000;' +
+            ' border-collapse: collapse;' +
+            'padding:15px;' +
+            '}' +
+            '</style>';
+        htmlToPrint += divToPrint.outerHTML;
+        newWin = window.open("");
+        newWin.document.write(htmlToPrint);
+        newWin.print();
+        newWin.close();
+    }
+    //function printData() {
+    //    var divContents = document.getElementById("divToPrint").innerHTML;
+    //    //var a = window.open('', '', 'height=1000, width=1000');
+    //   document.write('<html><body>');
+    //   // a.document.write('<body >');
+    //    document.write(divContents);
+    //    document.write('</body></html>');
+    //   document.close();
+    //    print();
+    //}
+</script>  

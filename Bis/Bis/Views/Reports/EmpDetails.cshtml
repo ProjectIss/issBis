@@ -1,0 +1,474 @@
+﻿
+@{
+    ViewBag.Title = "EmpDetails";
+}
+<script src="~/assets/js/FileSaver.js"></script>
+<script src="~/assets/js/xlsx.full.min.js"></script>
+
+<h2>Employee Details</h2>
+
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="form-group">
+
+            <label class="d-block">Employee Id</label>
+            <select name="empCategory" id="empCategory" class="form-control col-xl-10" required>
+                <option value="">-Select EmployeeId-</option>
+                @foreach (var item in ViewBag.employee)
+                {
+                    <option value="@item.id">@item.employeeId-@item.name </option>
+                }
+            </select>
+        </div>
+    </div>
+    <div>
+        <button type="button" class="dropdown-item" id="btnSearch" style="margin-top: 27px;margin-left: 11px; background-color: #eee;"><i class="icon-search4"></i> Search</button>
+    </div>
+</div>
+
+
+<div class="card">
+
+    <div class="col-12">
+
+
+
+    </div>
+    <div class="row">
+        <div class="col-md-10">
+
+
+            <div class="card">
+                <div class="card-header header-elements-inline">
+                    <h5 class="card-title">Employee Details Report</h5>
+                    <div class="header-elements">
+                        <div class="list-icons">
+                            @*<button href="#" class="dropdown-item" id="btnSearch"><i class="icon-search4"></i> Search</button>*@
+                            @*<button href="#" class="dropdown-item" id="exportexcel"><i class="icon-file-excel"></i> .xlsx</button>*@
+                            <button href="#" class="dropdown-item" id="print"><i class="icon-printer"></i> Print</button>
+                            @*<button href="#" class="dropdown-item" id="btnSearch"><i class="icon-search4"></i> Search</button>*@
+
+                        </div>
+                    </div>
+                </div>
+                <table class="table datatable-basic table-bordered table-striped table-hover" id="tbladvanceHead">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Employee Id</th>
+                            <th>Date Of Joining</th>
+                            <th>Date Of Birth</th>
+                            <th>Email</th>
+                            <th>Phone Number</th>
+
+                        </tr>
+                    </thead>
+                    <tbody id="tblEmployee1"></tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div align="center">
+                <img alt="User Pic"
+                     src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg"
+                     id="profile-image1"
+                     class="img-circle img-responsive" style="width: 150px;" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="col-12">
+
+
+        <div class="card">
+
+            <table class="table datatable-basic table-bordered table-striped table-hover" id="tbladvanceHead">
+                <thead>
+                    <tr>
+                        <th>Permanent Address</th>
+                        <th>Aadhar Number</th>
+                        <th>Resume</th>
+                        <th>PAN No</th>
+                        <th>Degree / Standard</th>
+                        <th>Board / University</th>
+                        <th>Percentage</th>
+                        <th>NDE Qualification Type</th>
+                        <th>Expiry Date</th>
+                        <th>Communication Address</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody id="tblEmployee2"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="col-12">
+
+
+        <div class="card">
+
+            <table class="table datatable-basic table-bordered table-striped table-hover" id="tbladvanceHead">
+                <thead>
+                    <tr>
+                        <th>Blood Group</th>
+                        <th>Holder Name</th>
+                        <th>Period From</th>
+                        <th>To</th>
+                        <th>Employee Category</th>
+                        <th>Bis Salary</th>
+                        <th>Uniform Issue Date</th>
+                        <th>Shoe Issue Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="tblEmployee3"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="col-sm-12">
+        <table class="table datatable-basic table-bordered table-striped table-hover" id="table">
+            <thead>
+                <h4 style="text-align:center;color: lightskyblue;">Education Qualification</h4>
+                <tr>
+                    <th>
+                        Institution
+                    </th>
+                    <th>
+                        Year Of Passing
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="tblEmployee4">
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<div class="card">
+    <div class="col-sm-12">
+        <table class="table datatable-basic table-bordered table-striped table-hover" id="table">
+            <thead>
+                <h4 style="text-align:center;color: lightskyblue;">
+                    Working Experience
+                </h4>
+                <tr>
+                    <th>
+                        Company Name
+                    </th>
+                    <th>
+                        Salary
+                    </th>
+                    <th>
+                        No Of Year Experience
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="tblEmployee5">
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<div class="card">
+    <div class="col-sm-12">
+        <table class="table datatable-basic table-bordered table-striped table-hover" id="table">
+            <thead>
+                <h4 style="text-align:center;color: lightskyblue;">
+                    Bank Detials
+                </h4>
+                <tr>
+                    <th>
+                        Bank Name
+                    </th>
+                    <th>
+                        Account Number
+                    </th>
+                    <th>
+                        Ifsc Code
+                    </th>
+                    <th>
+                        ESI Number
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="tblEmployee6">
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="col-sm-12">
+        <table class="table datatable-basic table-bordered table-striped table-hover" id="table">
+            <thead>
+                <h4 style="text-align:center;color: lightskyblue;">
+                    NDT Details&Validity Date
+                </h4>
+                <tr>
+                    <th>
+                        VT
+                    </th>
+                    <th>
+                        MT
+                    </th>
+                    <th>
+                        PT
+                    </th>
+                    <th>
+                        RT
+                    </th>
+                    <th>
+                        RTFI
+                    </th>
+                    <th>
+                        INSTITUTION NAME
+                    </th>
+                    <th>
+                        RENEWAL NUMBER
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="tblEmployee7">
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+     $(function () {
+         $('#empCategory').select2();
+         $("#print").click(function () {
+             window.print();
+        });
+        $("#btnSearch").click(function () {
+           var id = document.getElementById("empCategory");
+           var category = id.options[id.selectedIndex].value;
+            EmployeeDetails(category);
+        });
+
+    });
+    function EmployeeDetails(category) {
+        $("#tblEmployee").empty();
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Content("~/Reports/Employees")',
+            dataType: 'json',
+            data: { CATEGORY: category },
+            success: function (result) {
+                var data = JSON.parse(result);
+                console.log(data);
+                $("#tblEmployee1").empty();
+                $("#tblEmployee2").empty();
+                $("#tblEmployee3").empty();
+                $("#tblEmployee4").empty();
+                $("#tblEmployee5").empty();
+                $("#tblEmployee6").empty();
+                $("#tblEmployee7").empty();
+                var row;
+                var row1;
+                var row2;
+                var row3;
+                var row4;
+                var row5;
+                var row6;
+                var doj = "";
+                var dob = "";
+                var address = "";
+                var panNo = "";
+                var degree = "";
+                var university = "";
+                var percentage = "";
+                var expiryDate = "";
+                var ndeQualificationType = "";
+                var communicationAddress = "";
+                var email = "";
+                var bloodGroup = "";
+                var holderName = "";
+                var periodFrom = "";
+                var periodTo = "";
+                var salary1 = "";
+                var uniformIssueDate = "";
+                var shoeIssueDate = "";
+                var status = "";
+                var institutionName = "";
+                var yearofCompletion = "";
+                var salary = "";
+                var bankName = "";
+                var accountNo = "";
+                var ifscCode = "";
+                var esi = "";
+                var institutionNameee = "";
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].doj != null) {
+                        var d = new Date(data[i].doj);
+                        var day = d.getDate();
+                        var month = d.getMonth() + 1;
+                        var year = d.getFullYear();
+                        var doj = day + "-" + month + "-" + year;
+                    }
+                    //if (data[i].dob != null) {
+                    //    var d = new Date(data[i].dob);
+                    //    var day = d.getDate();
+                    //    var month = d.getMonth() + 1;
+                    //    var year = d.getFullYear();
+                    //    var dob = day + "-" + month + "-" + year;
+                    //}
+                    if (data[i].address != null) { address = data[i].address; }
+                    if (data[i].panNo != null) { panNo = data[i].panNo; }
+                    if (data[i].degree != null) { degree = data[i].degree; }
+                    if (data[i].university != null) { university = data[i].university; }
+                    if (data[i].percentage != null) { percentage = data[i].percentage; }
+                    if (data[i].ndeQualificationType != null) { ndeQualificationType = data[i].ndeQualificationType; }
+                    if (data[i].expiryDate != null) {
+                        var d = new Date(data[i].expiryDate);
+                        var day = d.getDate();
+                        var month = d.getMonth() + 1;
+                        var year = d.getFullYear();
+                        var expiryDate = day + "-" + month + "-" + year;
+                    }
+                    if (data[i].communicationAddress != null) { communicationAddress = data[i].communicationAddress; }
+                    if (data[i].email != null) { email = data[i].email; }
+                    if (data[i].bloodGroup != null) { bloodGroup = data[i].bloodGroup; }
+                    if (data[i].holderName != null) { holderName = data[i].holderName; }
+                    if (data[i].periodFrom != null) {
+                        var d = new Date(data[i].periodFrom);
+                        var day = d.getDate();
+                        var month = d.getMonth() + 1;
+                        var year = d.getFullYear();
+                        var periodFrom = day + "-" + month + "-" + year;
+                    }
+                    if (data[i].periodTo != null) {
+                        var d = new Date(data[i].periodTo);
+                        var day = d.getDate();
+                        var month = d.getMonth() + 1;
+                        var year = d.getFullYear();
+                        var periodTo = day + "-" + month + "-" + year;
+                    }
+                    if (data[i].salary1 != null) { salary1 = data[i].salary1; }
+                    if (data[i].uniformIssueDate != null) {
+                        var d = new Date(data[i].uniformIssueDate);
+                        var day = d.getDate();
+                        var month = d.getMonth() + 1;
+                        var year = d.getFullYear();
+                        var uniformIssueDate = day + "-" + month + "-" + year;
+                    }
+                    if (data[i].shoeIssueDate != null) {
+                        var d = new Date(data[i].shoeIssueDate);
+                        var day = d.getDate();
+                        var month = d.getMonth() + 1;
+                        var year = d.getFullYear();
+                        var shoeIssueDate = day + "-" + month + "-" + year;
+                    }
+                    if (data[i].status != null) { status = data[i].status; }
+                    if (data[i].institutionName != null) { institutionName = data[i].institutionName; }
+                    if (data[i].yearofCompletion != null) { yearofCompletion = data[i].yearofCompletion; }
+                    if (data[i].salary != null) { salary = data[i].salary; }
+                    if (data[i].bankName != null) { bankName = data[i].bankName; }
+                    if (data[i].accountNo != null) { accountNo = data[i].accountNo; }
+                    if (data[i].ifscCode != null) { ifscCode = data[i].ifscCode; }
+                    if (data[i].esi != null) { esi = data[i].esi; }
+                    if (data[i].institutionName != null) { institutionNameee = data[i].institutionName;}
+                    row = '<tr>';
+                    row += '<td>' + data[i].Name + '</td>';
+                    row += '<td>' + data[i].EmployeeId + '</td>';
+                    row += '<td>' + doj + '</td>';
+                    row += '<td>' + data[i].dob + '</td>';
+                    row += '<td>' + data[i].email + '</td>';
+                    row += '<td>' + data[i].phoneNumber + '</td>';
+                    row += '</tr>';
+                    row1 = '<tr>';
+                    row1 += '<td>' + address + '</td>';
+                    row1 += '<td>' + data[i].adharNumber + '</td>';
+                    row1 += '<td>' + "" + '</td>';
+                    row1 += '<td>' + panNo + '</td>';
+                    row1 += '<td>' + degree + '</td>';
+                    row1 += '<td>' + university+ '</td>';
+                    row1 += '<td>' + percentage + '</td>';
+                    row1 += '<td>' + ndeQualificationType + '</td>';
+                    row1 += '<td>' + expiryDate + '</td>';
+                    row1 += '<td>' + communicationAddress + '</td>';
+                    row1 += '<td>' + email + '</td>';
+                    row1 += '</tr>';
+                    row2 = '<tr>';
+                    row2 += '<td>' + bloodGroup + '</td>';
+                    row2 += '<td>' + holderName + '</td>';
+                    row2 += '<td>' + periodFrom + '</td>';
+                    row2 += '<td>' + periodTo + '</td>';
+                    row2 += '<td>' + "" + '</td>';
+                    row2 += '<td>' + salary1 + '</td>';
+                    row2 += '<td>' + uniformIssueDate + '</td>';
+                    row2 += '<td>' + shoeIssueDate + '</td>';
+                    row2 += '<td>' + status + '</td>';
+                    row2 += '</tr>';
+                    row3 = '<tr>';
+                    row3 += '<td>' + institutionName + '</td>';
+                    row3 += '<td>' + yearofCompletion + '</td>';
+                    row3 += '</tr>';
+                    row4 = '<tr>';
+                    row4 += '<td>' + "" + '</td>';
+                    row4 += '<td>' + salary + '</td>';
+                    row4 += '<td>' + "" + '</td>';
+                    row4 += '</tr>';
+                    row5 = '<tr>';
+                    row5 += '<td>' + bankName + '</td>';
+                    row5 += '<td>' + accountNo + '</td>';
+                    row5 += '<td>' + ifscCode + '</td>';
+                    row5 += '<td>' + esi + '</td>';
+                    row5 += '</tr>';
+                    row6 = '<tr>';
+                    row6 += '<td>' + "" + '</td>';
+                    row6 += '<td>' + "" + '</td>';
+                    row6 += '<td>' + "" + '</td>';
+                    row6 += '<td>' + "" + '</td>';
+                    row6 += '<td>' +"" + '</td>';
+                    row6 += '<td>' + institutionNameee + '</td>';
+                    row6 += '<td>' +"" + '</td>';
+                    row6 += '</tr>';
+                    $("#tblEmployee1").append(row);
+                    $("#tblEmployee2").append(row1);
+                    $("#tblEmployee3").append(row2);
+                    $("#tblEmployee4").append(row3);
+                    $("#tblEmployee5").append(row4);
+                    $("#tblEmployee6").append(row5);
+                    $("#tblEmployee7").append(row6);
+                }
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    }
+    function exportToExcel() {
+    var wscols = [
+      { wch: 10 },
+      { wch: 20 },
+      { wch: 15 },
+      { wch: 15 },
+      { wch: 15 },
+    ];
+    var wb = XLSX.utils.table_to_book(document.getElementById("tbladvanceHead"), {
+      sheet: "Advance",
+      raw: true,
+    });
+    wb.Sheets["Advance"]["!cols"] = wscols;
+    var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+    saveAs(new Blob([s2ab(wbout)], { type: "application/octet-stream" }), "Advance.xlsx");
+  }
+
+function s2ab(s) {
+        var buf = new ArrayBuffer(s.length);
+        var view = new Uint8Array(buf);
+        for (var i = 0; i < s.length; i++) {
+            view[i] = s.charCodeAt(i) & 0xFF;
+        }
+        return buf;
+    }
+</script>

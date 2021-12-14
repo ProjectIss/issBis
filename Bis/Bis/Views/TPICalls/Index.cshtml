@@ -1,0 +1,46 @@
+﻿@model IEnumerable<Bis.Models.TPICall>
+
+@{
+    ViewBag.Title = "Index";
+}
+<div class="row">
+    <div class="col-md-4">
+        <a href="/TPICalls/Create" class="btn btn-primary col-12">New TPI CAll</a>
+    </div>
+</div>
+<br />
+<div class="row">
+
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4">
+            <div class="card alpha-success border-success">
+                <div class="card-header header-elements-inline">
+                    <h6 class="card-title"><b>@Html.DisplayFor(modelItem => item.TPIAllocation.title) <span>( @Html.DisplayFor(modelItem => item.TPIAllocation.status) ) </span></b> </h6>
+                    <div class="header-elements">
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p> @Html.DisplayFor(modelItem => item.TPIAllocation.Company.companyName)  - @Html.DisplayFor(modelItem => item.inTime) - @Html.DisplayFor(modelItem => item.outTime)</p>
+                    <p> Date: @Html.DisplayFor(modelItem => item.date)</p>
+                    <p> Created: @Html.DisplayFor(modelItem => item.createdAt)</p>
+                    <p> Updated: @Html.DisplayFor(modelItem => item.modifiedAt)</p>
+                    @if (item.TPIAllocation.status != "Completed")
+                    {
+                        <div class="row">
+                            @Html.ActionLink("UPDATE", "Edit", new { id = item.id }, new { @class = "btn btn-light col-5" })
+                            <div class="col-1"></div>
+                            @Html.ActionLink("REMOVE", "Delete", new { id = item.id }, new { onclick = "return confirm('Are sure to delete this item?');", @class = "btn bg-danger col-5" })
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<script>
+    $(function () {
+        $("#tblData").dataTable();
+    });
+</script>
+

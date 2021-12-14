@@ -1,0 +1,158 @@
+﻿
+@{
+    ViewBag.Title = "EsiPf";
+}
+<script src="~/assets/js/FileSaver.js"></script>
+<script src="~/assets/js/xlsx.full.min.js"></script>
+<h2>ESI REPORT</h2>
+
+<div class="card">
+    <div class="col-12">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+
+                    <label class="d-block">Employee Category</label>
+                    <select name="empCategory" id="empCategory" class="form-control col-xl-10" required>
+                        <option value="">-Select Category-</option>
+                        @foreach (var item in ViewBag.category)
+                        {
+                            <option value="@item.id">@item.name</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>From Date</label>
+                    <div class="input-group">
+                        <span class="input-group-prepend">
+                            <span class="input-group-text"><i class="icon-calendar22" id="fromicon"></i></span>
+                        </span>
+                        <input type="text" class="form-control daterange-single-date" id="fromdate">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>To Date</label>
+                    <div class="input-group">
+                        <span class="input-group-prepend">
+                            <span class="input-group-text"><i class="icon-calendar22" id="toicon"></i></span>
+                        </span>
+                        <input type="text" class="form-control daterange-single-date" id="todate">
+                    </div>
+                </div>
+            </div>
+            <div>
+                <button type="button" class="dropdown-item" id="btnSearch" style="margin-top: 27px;margin-left: 11px; background-color: #eee;"><i class="icon-search4"></i> Search</button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header header-elements-inline">
+                <h5 class="card-title">ESI Report</h5>
+                <div class="header-elements">
+                    <div class="list-icons">
+                        <button href="#" class="dropdown-item" id="exportexcel"><i class="icon-file-excel"></i> .xlsx</button>
+                        <button href="#" class="dropdown-item" id="print"><i class="icon-printer"></i> Print</button>
+                    </div>
+                </div>
+            </div>
+            <table class="table datatable-basic table-bordered table-striped table-hover" id="tblesireport">
+                <thead>
+                    <tr>
+                        <th>Employee ID</th>
+                        <th>Employee Name</th>
+                        <th>Working Days</th>
+                        <th>Salary/Day</th>
+                        <th>Gross Salary</th>
+                        <th>Employer Contribution(3.25%)</th>
+                        <th>Employee Contribution(0.75%)</th>
+                        <th>Total Contribution</th>
+                        <th>Net Salary</th>
+                    </tr>
+                </thead>
+                <tbody id="tblESI"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('#empCategory').select2();
+        $("#exportexcel").click(function () {
+            exportToExcel();
+        });
+        $("#print").click(function () {
+            window.print();
+        });
+        $("#btnSearch").click(function () {
+           var id = document.getElementById("empCategory");
+            var category = id.options[id.selectedIndex].value;
+
+            var formatDate = $('#fromdate').val().split('/');
+            var from = formatDate[2] + "-" + formatDate[1] + "-" + formatDate[0];
+            var formatToDate = $('#todate').val().split('/');
+            var to = formatToDate[2] + "-" + formatToDate[1] + "-" + formatToDate[0];
+
+            Advance(category, from, to);
+        });
+
+    });
+    function Advance(category, from, to) {
+        $("#tblESI").empty();
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Content("~/Reports/esipfreport")',
+            dataType: 'json',
+            data: { CATEGORY: category, FROM: from, TO: to },
+            success: function (result) {
+                var data = JSON.parse(result);
+                var row;
+                for (var i = 0; i < data.length; i++) {
+                    row = '<tr>';
+                    row += '<td>' + data[i].EMPLOYEEID + '</td>';
+                    row += '<td>' + data[i].NAME + '</td>';
+                    row += '<td>' + data[i].WORKINGDAYS + '</td>';
+                    row += '<td>' + data[i].SALARY + '</td>';
+                    row += '<td>' + data[i].GROSS_SALARY + '</td>';
+                    row += '<td>' + data[i].EMPLOYER_CONT + '</td>';
+                    row += '<td>' + data[i].EMPLOYEE_CONT + '</td>';
+                    row += '<td>' + data[i].TOTAL_CONT + '</td>';
+                    row += '<td>' + data[i].NET_SALARY + '</td>';
+                    row += '</tr>';
+                    $("#tblESI").append(row);
+                }
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    }
+    function exportToExcel() {
+    var wscols = [
+      { wch: 10 },
+      { wch: 20 },
+      { wch: 15 },
+      { wch: 15 },
+      { wch: 15 },
+    ];
+        var wb = XLSX.utils.table_to_book(document.getElementById("tblesireport"), {
+      sheet: "ESI",
+      raw: true,
+    });
+        wb.Sheets["ESI"]["!cols"] = wscols;
+    var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+    saveAs(new Blob([s2ab(wbout)], { type: "application/octet-stream" }), "ESI.xlsx");
+    }
+
+function s2ab(s) {
+        var buf = new ArrayBuffer(s.length);
+        var view = new Uint8Array(buf);
+        for (var i = 0; i < s.length; i++) {
+            view[i] = s.charCodeAt(i) & 0xFF;
+        }
+        return buf;
+    }
+</script>

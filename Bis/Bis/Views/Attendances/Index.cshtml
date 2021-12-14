@@ -1,0 +1,129 @@
+﻿@model IEnumerable<Bis.Models.Attendance>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header header-elements-inline">
+                <h5 class="card-title">Attendance</h5>
+                <div class="header-elements">
+                    <div class="list-icons">
+                        <div class="row">
+                            <div class="col-4">
+                                <select name="empCategory" id="empCategory" class="form-control col-xl-10" required>
+                                    <option value="">-Select Category-</option>
+                                    @foreach (var item in ViewBag.category)
+                                    {
+                                        <option value="@item.id">@item.name </option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-4">
+                                <div class="input-group">
+                                    <span class="input-group-prepend">
+                                        <span class="input-group-text"><i class="icon-calendar22"></i></span>
+                                    </span>
+                                    <input type="text" id="date" class="form-control daterange-single-date">
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <button type="button" class="btn btn-primary" id="btnSearch"> Show</button>
+                                <button type="button" class="btn btn-primary" id="btnSave"> Save</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <table class="table datatable-basic table-bordered table-striped table-hover" id="attConsolidate">
+                <thead>
+                    <tr>
+                        <th style="display:none;">ID</th>
+                        <th>Employee ID</th>
+                        <th>Employee Name</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="tblAttendance">
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+<script>
+    $(function () {
+           $('#empCategory').select2();
+        $("#attConsolidate").dataTable();
+        $("#btnSearch").click(function () {
+            $("#tblAttendance").empty();
+            var Date = $('#date').val();
+            var c = document.getElementById("empCategory");
+            var category = c.options[c.selectedIndex].value;
+            BindData(Date, category);
+        });
+
+        $("#btnSave").click(function () {
+            var TableData = new Array();
+            var dateVal = $('#date').val();
+            $('#attConsolidate tr').each(function (row, tr) {
+                TableData[row] = {
+                    "ID": $(tr).find('td:eq(0)').text()
+                    , "EmpId": $(tr).find('td:eq(1)').text()
+                    , "Name": $(tr).find('td:eq(2)').text()
+                    , "Date": $(tr).find('td:eq(3)').text()
+                    , "Status": $(tr).find("select").val()
+                }
+            });
+            TableData.shift();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Content("~/Attendances/SaveAttendance")',
+                dataType: 'json',
+                data: { attendance: TableData, Date: dateVal },
+                success: function (result) {
+                    alert("Saved Successfully");
+                },
+            });
+        });
+    });
+    function BindData(Date, category) {
+          $.ajax({
+            type: 'POST',
+            url: '@Url.Content("~/Attendances/CategoryEmployees")',
+            dataType: 'json',
+            data: { Category: category, Date: Date },
+              success: function (result) {
+                var data = JSON.parse(result);
+                  var row;
+                  var option1;
+                  var option2;
+                  for (var i = 0; i < data.length; i++) {
+                      if (data[i].STATUS == "Absent") {
+                          option1 = "Absent";
+                          option2 = "Present";
+                      }
+                      else {
+                          option1 = "Present";
+                          option2 = "Absent";
+                      }
+                    row = '<tr>';
+                    row += '<td class="attrValue" style="display:none;">' + data[i].ID + '</td>';
+                    row += '<td class="attrValue">' + data[i].EMPLOYEEID + '</td>';
+                    row += '<td class="attrValue">' + data[i].NAME + '</td>';
+                    row += '<td class="attrValue">' + data[i].DATE + '</td>';
+                      row += '<td class="attrValue"><select class="form-control col-xl-10">' + '<option >' + option1 + '</option>' + '<option>' + option2 + '</option>' + '</select></td>';
+                    row += '</tr>';
+                    $("#tblAttendance").append(row);
+                }
+            },
+        });
+    }
+   
+</script>
+
+

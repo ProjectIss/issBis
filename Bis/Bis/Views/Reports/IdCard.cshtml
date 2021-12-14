@@ -1,0 +1,161 @@
+﻿
+@{
+    ViewBag.Title = "IdCard";
+}
+<script src="~/assets/js/FileSaver.js"></script>
+<script src="~/assets/js/xlsx.full.min.js"></script>
+<h2>ID Card</h2>
+<div class="card">
+    <div class="col-md-12">
+        <div class="row" id="selectid">
+            <div class="form-group col-md-3">
+                <label class="d-block">Employee Id</label>
+                <select name="empCategory" id="employeeID" class="form-control col-xl-10" required>
+                    <option value="">-Select Id-</option>
+                    @foreach (var item in ViewBag.employee)
+                    {
+                        <option value="@item.id">@item.employeeId-@item.name </option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button type="button" class="dropdown-item" id="btnSearch" style="margin-top: 27px;margin-left: 11px;background-color: #eee;"><i class="icon-search4"></i> Search</button>
+
+            </div>
+            <div class="col-md-1">
+                <button type="button" class="dropdown-item" id="btnprint" style="margin-top: 27px;margin-left: 11px;background-color: #eee;"><i class="icon-printer"></i> Print</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <div class="row" id="id">
+            <div class="col-xl-3 col-sm-6">
+                <div class="card-orange-400" style=" background-size: contain;background-color:#FFCE33">
+                    <div class="card-body text-center">
+                        <div class="card-body text-center card bg-white">
+                            <div style="align-content:center">
+                                <img class="img-container" src="~/assets/img/bis-logo.png" width="100" height="50" alt="center">
+                            </div>
+                            <span class="d-block opacity-75">An ISO 9001 : 2015 Certified Company</span>
+                        </div>
+                        <div>
+                            <img src="" width="170" height="190" id="lblphoto">
+                        </div>
+                        <div class="card-body text-center card-orange-400">
+                            <label class="font-weight-semibold mb-0">ID NO: <label id="lblIDno"></label></label>
+                        </div>
+                        <div class="card-orange-400">
+                            <label class="font-weight-semibold mb-0">Name: <label id="lblName"></label></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6" style="height:406px">
+
+                <div class="card bg-white" style=" background-size: contain;background-color:#FFCE33">
+                    <div class="card-body text-center" style="height: 455px;">
+                        <div class="card-body text-left card-orange-400">
+                            <div>
+                                <label class="font-size-lg">Address: <label class="font-weight-semibold mb-0" id="lblAddress"></label></label>
+                                <label class="font-weight-semibold mb-0" id="lblAddress1"></label>
+                            </div><br>
+                            <div>
+                                <label class="font-size-lg">DOB: <label class="font-weight-semibold mb-0" id="lblDOB"></label></label>
+                            </div>
+                            <div>
+                                <label class="font-weight-semibold mb-0">Blood Group: <label class="font-size-lg" id="lblBG"></label></label>
+                            </div>
+                            <div>
+                                <label class="font-weight-semibold mb-0">Phone No: <label class="font-size-lg" id="lblphno"></label></label>
+                            </div>
+
+                        </div>
+                        <div style="margin-top:50px">
+                            <div style="text-align:right">
+                                <span class="d-block opacity-75">Issuing Authority</span>
+
+                                <img src="~/global_assets/images/signature.png" width="70" height="20" />
+
+                            </div><br>
+                            <div class="card-orange-400" style=" background-size: contain;background-color:#FFCE33">
+
+                                <h6 class="font-weight-semibold mb-0">BRIGHT INSPECTION SERVICES</h6>
+                                <h7 class="font-weight-semibold mb-0"># 58, Narayanaguru Road, Saibaba colony,</h7>
+                                <h7 class="font-weight-semibold mb-0">Coimbatore. Ph : 96776 01010 90872 40240 www.bisgroup.in</h7>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var employee = 0;
+    $(function () {
+                $('#employeeID').select2();
+        debugger
+        $("#exportexcel").click(function () {
+            exportToExcel();
+        });
+
+        $("#btnprint").click(function () {
+            $('#selectid').hide();
+            window.print();
+            location.reload();
+        });
+
+        $("#btnSearch").click(function () {
+            debugger
+            var id = document.getElementById("employeeID");
+            var employee = id.options[id.selectedIndex].value;
+            Id(employee);
+        });
+    });
+    function Id(employee) {
+        debugger
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Content("~/Reports/EmployeeIDCard")',
+                dataType: 'json',
+                data: { ID: employee },
+                success: function (result) {
+                    debugger
+                     $("#lblIDno").empty();
+            $("#lblName").empty();
+            $("#lblDOB").empty();
+            $("#lblBG").empty();
+            $("#lblphno").empty();
+            $("#lblAddress").empty();
+                    var data = JSON.parse(result);
+                    var add = [data[0].address];
+                    for (var i = 0; i < data.length; i++) {
+                       if (data[i].address != null) {
+                          data[i].address = data[i].address.replace(/<[^>]+>/g, '');
+                           var address1 = data[i].address.slice(0, 30);
+                           var address2 = data[i].address.slice(31, 60);
+                       }
+                        $("#lblIDno").append(data[i].employeeId);
+                        $("#lblName").append(data[i].name);
+                        $("#lblDOB").append(data[i].DOB);
+                        $("#lblBG").append(data[i].bloodGroup);
+                        $("#lblphno").append(data[i].phoneNumber);
+                        if (data[i].photos == "No Photo") {
+                            $("#lblphoto").attr("src", "~/assets/img/bis-logo.png");
+                        } else {
+                            $("#lblphoto").attr("src", data[i].photos);
+                        }
+                        $("#lblAddress").append(address1);
+                        $("#lblAddress1").append(address2);
+
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+    }
+</script>

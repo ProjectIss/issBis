@@ -1,0 +1,187 @@
+﻿
+@{
+    ViewBag.Title = "TPICallAnnexure";
+}
+
+<script src="~/assets/js/FileSaver.js"></script>
+<script src="~/assets/js/xlsx.full.min.js"></script>
+<div class="row">
+    @*<div class="col-md-2">
+            <div class="form-group">
+                <label class="d-block" id="lblctg">Employee Category</label>
+                <select name="empCategory" id="empCategory" class="form-control col-xl-10" required>
+                    <option value="">-Select Category-</option>
+                    @foreach (var item in ViewBag.category)
+                    {
+                        <option value="@item.id">@item.name </option>
+                    }
+                </select>
+            </div>
+        </div>*@
+    <div class="col-md-2">
+        <div class="form-group">
+            <label class="d-block" id="lblctg">Company</label>
+            <select name="company" id="company" class="form-control col-xl-10" required>
+                <option value="">-Select Company-</option>
+                @foreach (var item in ViewBag.company)
+                {
+                    <option value="@item.id">@item.companyName </option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="form-group">
+            <label>Date</label>
+            <div class="input-group">
+                <input type="month" class="form-control" id="months">
+            </div>
+        </div>
+    </div>
+    <div>
+        <button type="button" class="dropdown-item" id="btnSearch" style="background-color:white;margin-top: 27px;margin-left: 11px;background-color: #eee;"><i class="icon-search4"></i> Search</button>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header header-elements-inline">
+        <h5 class="card-title">TPI CallAnnexure</h5>
+        <div class="header-elements">
+            <div class="list-icons">
+                <button type="button" class="dropdown-item" id="btnxlsx"><i class="icon-file-excel"></i> .xlsx</button>
+                <button type="button" class="dropdown-item" id="btnprint"><i class="icon-printer"></i> Print</button>
+            </div>
+        </div>
+    </div>
+    <table class="table datatable-basic table-bordered table-striped table-hover" id="dailyAttd">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Employee Name</th>
+                <th>Location</th>
+                <th>Vendor</th>
+                <th>Plant</th>
+                <th>Product Group</th>
+                <th>In Time</th>
+                <th>Offering Time</th>
+                <th>Out Time</th>
+                <th>IDLE Time</th>
+                <th>Days</th>
+                <th>Total QTY Offerd</th>
+                <th>No.of Ok Casting</th>
+                <th>FTP</th>
+                <th>STP</th>
+                <th>RW</th>
+                <th>Hold</th>
+                <th>Rejection</th>
+                <th>Scope Inspection</th>
+            </tr>
+        </thead>
+        <tbody id="tbldailyAttd">
+        </tbody>
+    </table>
+</div>
+<script>
+    $(function () {
+        $("#empCategory").select2();
+        $("#company").select2();
+        $("#btnSearch").click(function () {
+            var month = $('#months').val();
+            var e = document.getElementById("company");
+            var cmpId = e.options[e.selectedIndex].value;
+
+            Connsolidate(month, cmpId);
+        });
+        $("#btnprint").click(function () {
+            printData();
+        });
+        $('#btnxlsx').click(function () {
+            exportToExcel();
+        });
+
+    });
+    function Connsolidate(fromDate, cmpId) {
+        $("#tbldailyAttd").empty();
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Content("~/Reports/TPICallAnnexureReport")',
+            dataType: 'json',
+            data: {fromDate: fromDate,cmpID: cmpId},
+            success: function (result) {
+                var data = JSON.parse(result);
+                debugger
+                var row;
+                for (var i = 0; i < data.length; i++) {
+                    row = '<tr>';
+                    row += '<td>' + data[i].Date + '</td>';
+                    row += '<td>' + data[i].name + '</td>';
+                    row += '<td>' + data[i].location + '</td>';
+                    row += '<td>' + data[i].CallRaiseBy + '</td>';
+                    row += '<td>' + data[i].plant + '</td>';
+                    row += '<td>' + data[i].productGroup + '</td>';
+                    row += '<td>' + data[i].inTime + '</td>';
+                    row += '<td>' + data[i].offeringTime + '</td>';
+                    row += '<td>' + data[i].outTime + '</td>';
+                    row += '<td>' + data[i].idleTime + '</td>';
+                    row += '<td>' + data[i].days + '</td>';
+                    row += '<td>' + data[i].totalQTYoffered + '</td>';
+                    row += '<td>' + data[i].noofOkCasting + '</td>';
+                    row += '<td>' + data[i].ftp + '</td>';
+                    row += '<td>' + data[i].stp + '</td>';
+                    row += '<td>' + data[i].rw + '</td>';
+                    row += '<td>' + data[i].hold + '</td>';
+                    row += '<td>' + data[i].rejected + '</td>';
+                    row += '<td>' + data[i].scopeinspection + '</td>';
+                    row += '</tr>';
+                    $("#tbldailyAttd").append(row);
+                }
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    }
+    function printData()
+    {
+        var divToPrint = document.getElementById('dailyAttd');
+        var htmlToPrint = '' +
+        '<style type="text/css">' +
+        'table, th, td {' +
+        'border:1px solid #000;' +
+        ' border-collapse: collapse;'+
+        'padding:15px;' +
+        '}' +
+        '</style>';
+        htmlToPrint += divToPrint.outerHTML;
+        newWin = window.open("");
+        newWin.document.write(htmlToPrint);
+        newWin.print();
+        newWin.close();
+    }
+    function exportToExcel() {
+        var wscols = [
+            { wch: 10 },
+            { wch: 20 },
+            { wch: 15 },
+            { wch: 15 },
+            { wch: 15 },
+        ];
+        var wb = XLSX.utils.table_to_book(document.getElementById("dailyAttd"), {
+            sheet: "Annexure",
+            raw: true,
+        });
+        wb.Sheets["Annexure"]["!cols"] = wscols;
+        var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+        saveAs(new Blob([s2ab(wbout)], { type: "application/octet-stream" }), "Annexure.xlsx");
+    }
+    function s2ab(s) {
+        var buf = new ArrayBuffer(s.length);
+        var view = new Uint8Array(buf);
+        for (var i = 0; i < s.length; i++) {
+            view[i] = s.charCodeAt(i) & 0xFF;
+        }
+        return buf;
+    }
+</script>
+
+

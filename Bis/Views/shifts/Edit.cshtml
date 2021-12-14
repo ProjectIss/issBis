@@ -1,0 +1,81 @@
+﻿@model Bis.Models.shift
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+
+<div class="row">
+    <div class="col-md-12">
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="card">
+                <div class="card-header header-elements-inline">
+                    <h5 class="card-title">Cteate</h5>
+                    <div class="header-elements">
+                        <div class="list-icons">
+                            @Html.ActionLink("Back to List", "Index", null, htmlAttributes: new { @class = "btn btn-primary" })
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+
+                        <div class="form-group col-md-4">
+                            @Html.LabelFor(model => model.Name, "Shift Name", htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div>
+                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group col-md-4">
+                            <label>Starting Time</label>
+                            <div class="input-group">
+                                <span class="input-group-prepend">
+                                    <span class="input-group-text"><i class="icon-calendar22"></i></span>
+                                </span>
+                                @*@Html.EditorFor(model => model.StartingTime, new { htmlAttributes = new { @class = "form-control daterange-single-date" } })*@
+                                @Html.TextBoxFor(model => model.StartingTime, new { type = "time" })
+                                @Html.ValidationMessageFor(model => model.StartingTime, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-4">   
+                            <label>Ending Time</label>
+                            <div class="input-group">
+                                <span class="input-group-prepend">
+                                    <span class="input-group-text"><i class="icon-calendar22"></i></span>
+                                </span>
+                                @*@Html.EditorFor(model => model.EndingTime, new { htmlAttributes = new { type="time" } })*@
+                                @Html.TextBoxFor(model => model.EndingTime, new { type = "time" })
+                                @Html.ValidationMessageFor(model => model.EndingTime, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            @Html.LabelFor(model => model.OverTime, htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="checkbox, control-label col-md-4">
+                                @Html.EditorFor(model => model.OverTime)
+                                @Html.ValidationMessageFor(model => model.OverTime, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="float-right">
+                        <button type="submit" value="Create" class="btn btn-success">Submit</button>
+                        @Html.ActionLink("Cancel", "Index", null, htmlAttributes: new { @class = "btn btn-primary" })
+                    </div>
+
+
+                </div>
+            </div>
+
+        }
+    </div>
+</div>
